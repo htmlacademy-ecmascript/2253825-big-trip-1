@@ -5,9 +5,10 @@ import FilterTimeView from '../view/filter-time-view.js';
 import HeaderTravelView from '../view/header-travel-view.js';
 
 
-export default class HeaderPresenter {
-  tripFilterComponent = new FilterTimeView();
+export default class FiltersPresenter {
   tripInfoComponent = new HeaderTravelView();
+  tripFilterComponent = new FilterTimeView();
+
 
   constructor ({ tripInfoContainer, tripFilterContainer }) {
     this.tripInfoContainer = tripInfoContainer;
