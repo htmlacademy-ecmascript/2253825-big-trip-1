@@ -6,6 +6,7 @@ const siteBodyElement = document.querySelector('.page-header');
 const siteTripInfo = siteBodyElement.querySelector('.trip-main');
 const tripFilterHeader = siteBodyElement.querySelector('.trip-controls__filters');
 
+
 const filtersPresenter = new FiltersPresenter({ tripInfoContainer: siteTripInfo, tripFilterContainer: tripFilterHeader });
 
 const siteMainElement = document.querySelector('.page-main');

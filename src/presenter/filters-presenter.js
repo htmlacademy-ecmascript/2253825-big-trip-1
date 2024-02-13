@@ -10,14 +10,13 @@ export default class FiltersPresenter {
   tripFilterComponent = new FilterTimeView();
 
 
-  constructor ({ tripInfoContainer, tripFilterContainer }) {
-    this.tripInfoContainer = tripInfoContainer;
+  constructor ({ tripFilterContainer }) {
     this.tripFilterContainer = tripFilterContainer;
   }
 
 
   init () {
-    render(this.tripInfoComponent, this.tripInfoContainer, RenderPosition.AFTERBEGIN);
+    render(this.tripInfoComponent, this.tripFilterContainer, RenderPosition.AFTERBEGIN);
     render(this.tripFilterComponent, this.tripFilterContainer, RenderPosition.AFTERBEGIN);
   }
 }
