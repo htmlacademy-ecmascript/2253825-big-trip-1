@@ -1,5 +1,5 @@
 import { getRandomInteger } from '../utils.js';
-import { Price } from './const.js';
+import { Price } from './mock-const.js';
 import { getDate } from './mock-utils.js';
 
 

@@ -1,5 +1,5 @@
 import { getRandomValue } from '../utils.js';
-import { CITIES, DESCRIPTION } from '.const.js';
+import { CITIES, DESCRIPTION } from './mock-const.js';
 
 
 function generateDestination () {
