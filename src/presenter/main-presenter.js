@@ -12,11 +12,11 @@ export default class MainPresenter {
   tripSortComponent = new TripSortView();
   tripEventsComponent = new FormEventView();
 
-  constructor ({ tripMainContainer, pointsModel, destinationsModel, offersModel }) {
+  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel }) {
     this.tripMainContainer = tripMainContainer;
-    this.pointsModel = pointsModel;
     this.destinationsModel = destinationsModel;
     this.offersModel = offersModel;
+    this.pointsModel = pointsModel;
 
     this.points = [ ...pointsModel.get()];
   }
@@ -31,6 +31,7 @@ export default class MainPresenter {
         pointDestinations: this.destinationsModel.get(),
         pointOffers: this.offersModel.get()
       }),
+
       this.tripEventsComponent.getElement());
 
     for (let i = 0; i < WAYPOINT; i++) {

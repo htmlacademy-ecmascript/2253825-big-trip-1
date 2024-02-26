@@ -1,25 +1,22 @@
-import { generatePoint } from '../mock/point.js';
 import { generateDestination } from '../mock/destination.js';
 import { generateOffer } from '../mock/offer.js';
+import { generatePoint } from '../mock/point.js';
 
 import { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES } from '../const.js';
 import { getRandomInteger, getRandomValue } from '../utils.js';
 
 
 export default class MockService {
-  points = [];
   destinations = [];
   offers = [];
+  points = [];
 
   constructor () {
-    this.points = this.generatePoints();
     this.destinations = this.generateDestinations();
     this.offers = this.generateOffers();
+    this.points = this.generatePoints();
   }
 
-  getPoints() {
-    return this.points;
-  }
 
   getDestinations() {
     return this.destinations;
@@ -29,11 +26,15 @@ export default class MockService {
     return this.offers;
   }
 
+  getPoints() {
+    return this.points;
+  }
+
 
   generateDestinations() {
 
     return Array.from(
-      {length: DESTINATION_COUNT},
+      { length: DESTINATION_COUNT },
       () => generateDestination()
     );
   }
@@ -58,13 +59,13 @@ export default class MockService {
       const offersByType = this.offers
         .find((offerByType) => offerByType.type === type);
 
-      const offersIds = (hasOffers)
+      const offerIds = (hasOffers)
         ? offersByType.offers
           .slice(0, getRandomInteger(0, OFFER_COUNT))
           .map((offer) => offer.id)
         : [];
 
-      return generatePoint(destination.id, offersIds, type);
+      return generatePoint(type, destination.id, offerIds);
     });
   }
 }
