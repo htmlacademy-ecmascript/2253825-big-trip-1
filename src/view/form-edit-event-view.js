@@ -1,7 +1,7 @@
 import { createElement } from '../render.js';
 
 
-function createEventsItemTemplate () {
+function createEventsItemTemplate ({ point, pointDestination, pointOffers }) {
 
   return (
     `<li class="trip-events__item">
@@ -150,8 +150,18 @@ function createEventsItemTemplate () {
 
 
 export default class FormEditEvent {
+  constructor({ point, pointDestination, pointOffers }) {
+    this.point = point;
+    this.pointDestination = pointDestination;
+    this.pointOffers = pointOffers;
+  }
+
   getTemplate () {
-    return createEventsItemTemplate ();
+    return createEventsItemTemplate ({
+      point: this.point,
+      pointDestination: this.pointDestination,
+      pointOffers: this.pointOffers
+    });
   }
 
 

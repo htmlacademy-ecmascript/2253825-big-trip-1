@@ -18,5 +18,15 @@ const TYPES = [
 
 const DEFAULT_TYPE = 'Flight';
 
+const POINT_EMPTY = {
+  basePrice: 0,
+  dateFrom: null,
+  dateTo: null,
+  destination: null,
+  isFavorite: false,
+  offers: [],
+  type: DEFAULT_TYPE
+};
 
-export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, DEFAULT_TYPE };
+
+export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, DEFAULT_TYPE, POINT_EMPTY };

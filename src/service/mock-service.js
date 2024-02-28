@@ -1,5 +1,5 @@
-import { generateDestination } from '../mock/destination.js';
-import { generateOffer } from '../mock/offer.js';
+import { generateDestination } from '../mock/point-destination.js';
+import { generateOffer } from '../mock/point-offer.js';
 import { generatePoint } from '../mock/point.js';
 
 import { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES } from '../const.js';

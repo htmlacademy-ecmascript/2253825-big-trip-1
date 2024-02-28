@@ -5,8 +5,6 @@ import FormEventView from '../view/form-event-view.js';
 import FormEditEvent from '../view/form-edit-event-view.js';
 import TripListView from '../view/trip-list-view.js';
 
-const WAYPOINT = 3;
-
 
 export default class MainPresenter {
   tripSortComponent = new TripSortView();
@@ -32,10 +30,18 @@ export default class MainPresenter {
         pointOffers: this.offersModel.get()
       }),
 
-      this.tripEventsComponent.getElement());
+      this.tripEventsComponent.getElement()
+    );
 
-    for (let i = 0; i < WAYPOINT; i++) {
-      render(new TripListView, this.tripEventsComponent.getElement());
-    }
+    this.points.forEach((point) => {
+      render(
+        new TripListView({
+          point,
+          pointDestinations: this.destinationsModel.getById(point.destination),
+          pointOffers: this.offersModel.getByType(point.type)
+        }),
+        this.tripEventsComponent.getElement()
+      );
+    });
   }
 }

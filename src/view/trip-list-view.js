@@ -1,7 +1,7 @@
 import { createElement } from '../render.js';
+import { formatStringToDateTime } from '../utils.js';
 
-
-function createTripListTemplate () {
+function createTripListTemplate ({ point, pointDestination, pointOffers }) {
   return (
     `<li class="trip-events__item">
     <div class="event">
@@ -45,8 +45,18 @@ function createTripListTemplate () {
 
 
 export default class TripListView {
+  constructor({ point, pointDestination, pointOffers }) {
+    this.point = point;
+    this.pointDestination = pointDestination;
+    this.pointOffers = pointOffers;
+  }
+
   getTemplate () {
-    return createTripListTemplate ();
+    return createTripListTemplate ({
+      point: this.point,
+      pointDestination: this.pointDestination,
+      pointOffers: this.pointOffers
+    });
   }
 
 
