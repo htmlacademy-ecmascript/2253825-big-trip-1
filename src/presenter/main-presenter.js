@@ -37,7 +37,7 @@ export default class MainPresenter {
       render(
         new TripListView({
           point,
-          pointDestinations: this.destinationsModel.getById(point.destination),
+          pointDestination: this.destinationsModel.getById(point.destination),
           pointOffers: this.offersModel.getByType(point.type)
         }),
         this.tripEventsComponent.getElement()

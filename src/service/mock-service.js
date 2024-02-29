@@ -1,6 +1,6 @@
-import { generateDestination } from '../mock/point-destination.js';
-import { generateOffer } from '../mock/point-offer.js';
-import { generatePoint } from '../mock/point.js';
+import { generateDestination } from '../mock/mock-destination.js';
+import { generateOffer } from '../mock/mock-offer.js';
+import { generatePoint } from '../mock/mock-point.js';
 
 import { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES } from '../const.js';
 import { getRandomInteger, getRandomValue } from '../utils.js';
@@ -65,7 +65,7 @@ export default class MockService {
           .map((offer) => offer.id)
         : [];
 
-      return generatePoint(type, destination.id, offerIds);
+      return generatePoint(destination.id, offerIds, type);
     });
   }
 }

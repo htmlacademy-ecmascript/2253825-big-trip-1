@@ -1,18 +1,18 @@
 import { createElement } from '../render.js';
+import { /*DEFAULT_TYPE, */POINT_EMPTY } from '../const.js';
 
+function createEventsItemTemplate ({ point/*, pointDestinations, pointOffers */}) {
 
-function createEventsItemTemplate ({ point, pointDestination, pointOffers }) {
-
-  return (
+  return (/*html*/
     `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-1">
+          <label class="event__type  event__type-btn" for="event-type-toggle-${point.id}">
             <span class="visually-hidden">Choose event type</span>
-            <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+            <img class="event__type-icon" width="17" height="17" src="img/icons/${point.type}.png" alt="Event type icon">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${point.id}" type="checkbox">
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
@@ -150,9 +150,9 @@ function createEventsItemTemplate ({ point, pointDestination, pointOffers }) {
 
 
 export default class FormEditEvent {
-  constructor({ point, pointDestination, pointOffers }) {
+  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers }) {
     this.point = point;
-    this.pointDestination = pointDestination;
+    this.pointDestinations = pointDestinations;
     this.pointOffers = pointOffers;
   }
 

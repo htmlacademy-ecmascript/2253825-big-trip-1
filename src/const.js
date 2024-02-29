@@ -1,4 +1,4 @@
-const OFFER_COUNT = 6;
+const OFFER_COUNT = 4;
 
 const DESTINATION_COUNT = 6;
 
@@ -16,6 +16,14 @@ const TYPES = [
   'Restaurant'
 ];
 
+const OFFER_LIST = [
+  'Add luggage',
+  'Switch to comfort',
+  'Rent a car',
+  'Add breakfast',
+];
+
+
 const DEFAULT_TYPE = 'Flight';
 
 const POINT_EMPTY = {
@@ -29,4 +37,4 @@ const POINT_EMPTY = {
 };
 
 
-export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, DEFAULT_TYPE, POINT_EMPTY };
+export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, OFFER_LIST, DEFAULT_TYPE, POINT_EMPTY };

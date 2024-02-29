@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import durationPlugin from 'dayjs/plugin/duration.js';
+
+dayjs.extend(durationPlugin);
 
 
 function getRandomInteger (a = 0, b = 1) {
@@ -18,16 +21,35 @@ function getRandomValue (items) {
 
 function formatStringToDateTime (date) {
 
-  return dayjs(date).format('YYYY-MM_DDTHH:mm');
+  return dayjs(date).format('DD/MM/YY HH:mm');
 }
 
 
 function formatStringToShortDate (date) {
 
-  return dayjs(date).format('MMM DD');
+  return dayjs(date).format('HH:MM');
 }
 
 
-export { getRandomInteger, getRandomValue, formatStringToDateTime, formatStringToShortDate };
+function formatDuration (dateFrom, dateTo) {
+
+  const ms = dayjs(dateTo).diff(dateFrom);
+  const duration = dayjs.duration(ms, 'ms');
+
+  if (duration.days()) {
+
+    return duration.format('DD[d] HH[h] mm[m]');
+  }
+
+  if (duration.hours()) {
+
+    return duration.format('HH[h] mm[m]');
+  }
+
+  return duration.format('mm[m]');
+}
+
+
+export { getRandomInteger, getRandomValue, formatStringToDateTime, formatStringToShortDate, formatDuration };
 
 
