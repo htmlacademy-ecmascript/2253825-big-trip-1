@@ -3,6 +3,7 @@ import { CITIES, DESCRIPTION } from './mock-const.js';
 
 
 function generateDestination () {
+
   const city = getRandomValue(CITIES);
 
   return {
