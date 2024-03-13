@@ -8,7 +8,7 @@ function generateDestination () {
 
   return {
     id: crypto.randomUUID(),
-    description: DESCRIPTION,
+    description: getRandomValue(DESCRIPTION),
     name: city,
     pictures: [
       {
