@@ -5,16 +5,18 @@ import HeaderTravelView from '../view/header-travel-view.js';
 
 
 export default class FiltersPresenter {
-  tripInfoComponent = new HeaderTravelView();
-  tripFilterComponent = new FilterTimeView();
+  #tripFilterContainer = null;
+
+  #tripInfoComponent = new HeaderTravelView();
+  #tripFilterComponent = new FilterTimeView();
 
   constructor ({ tripFilterContainer }) {
-    this.tripFilterContainer = tripFilterContainer;
+    this.#tripFilterContainer = tripFilterContainer;
   }
 
   init () {
-    render(this.tripInfoComponent, this.tripFilterContainer, RenderPosition.AFTERBEGIN);
-    render(this.tripFilterComponent, this.tripFilterContainer, RenderPosition.AFTERBEGIN);
+    render(this.#tripInfoComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
+    render(this.#tripFilterComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
   }
 }
 

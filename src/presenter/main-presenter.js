@@ -7,40 +7,44 @@ import PointListView from '../view/point-list-view.js';
 
 
 export default class MainPresenter {
-  tripSortComponent = new TripSortView();
-  tripEventsComponent = new FormEventView();
+  #tripMainContainer = null;
+  #destinationsModel = null;
+  #offersModel = null;
+
+  #tripSortComponent = new TripSortView();
+  #tripEventsComponent = new FormEventView();
+
+  #tripPoints = null;
 
   constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel }) {
-    this.tripMainContainer = tripMainContainer;
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
-    this.pointsModel = pointsModel;
-
-    this.points = [ ...pointsModel.get()];
+    this.#tripMainContainer = tripMainContainer;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+    this.#tripPoints = [ ...pointsModel.points];
   }
 
   init () {
-    render(this.tripSortComponent, this.tripMainContainer);
-    render(this.tripEventsComponent, this.tripMainContainer);
+    render(this.#tripSortComponent, this.#tripMainContainer);
+    render(this.#tripEventsComponent, this.#tripMainContainer);
 
     render(
       new FormEditEvent({
-        point: this.points[0],
-        pointDestinations: this.destinationsModel.get(),
-        pointOffers: this.offersModel.get()
+        point: this.#tripPoints[0],
+        pointDestinations: this.#destinationsModel.destinations,
+        pointOffers: this.#offersModel.offers
       }),
 
-      this.tripEventsComponent.element
+      this.#tripEventsComponent.element
     );
 
-    this.points.forEach((point) => {
+    this.#tripPoints.forEach((point) => {
       render(
         new PointListView({
           point,
-          pointDestination: this.destinationsModel.getById(point.destination),
-          pointOffers: this.offersModel.getByType(point.type)
+          pointDestination: this.#destinationsModel.getById(point.destination),
+          pointOffers: this.#offersModel.getByType(point.type)
         }),
-        this.tripEventsComponent.element
+        this.#tripEventsComponent.element
       );
     });
   }

@@ -7,27 +7,27 @@ import { getRandomInteger, getRandomValue } from '../utils.js';
 
 
 export default class MockService {
-  destinations = [];
-  offers = [];
-  points = [];
+  #destinations = [];
+  #offers = [];
+  #points = [];
 
   constructor () {
-    this.destinations = this.generateDestinations();
-    this.offers = this.generateOffers();
-    this.points = this.generatePoints();
+    this.#destinations = this.generateDestinations();
+    this.#offers = this.generateOffers();
+    this.#points = this.generatePoints();
   }
 
 
-  getDestinations() {
-    return this.destinations;
+  get destinations() {
+    return this.#destinations;
   }
 
-  getOffers() {
-    return this.offers;
+  get offers() {
+    return this.#offers;
   }
 
-  getPoints() {
-    return this.points;
+  get points() {
+    return this.#points;
   }
 
 
@@ -52,11 +52,11 @@ export default class MockService {
 
     return Array.from({ length: POINT_COUNT }, () => {
       const type = getRandomValue(TYPES);
-      const destination = getRandomValue(this.destinations);
+      const destination = getRandomValue(this.#destinations);
 
       const hasOffers = getRandomInteger(0, 1);
 
-      const offersByType = this.offers
+      const offersByType = this.#offers
         .find((offerByType) => offerByType.type === type);
 
       const offerIds = (hasOffers)
