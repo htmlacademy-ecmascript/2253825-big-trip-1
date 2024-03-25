@@ -1,9 +1,9 @@
-import { render } from '../render.js';
+import { render } from '../framework/render.js';
 
 import TripSortView from '../view/trip-sort-view.js';
 import FormEventView from '../view/form-event-view.js';
-import FormEditEvent from '../view/form-edit-event-view.js';
-import TripListView from '../view/trip-list-view.js';
+import FormEditEvent from '../view/edit-event-view.js';
+import PointListView from '../view/point-list-view.js';
 
 
 export default class MainPresenter {
@@ -30,17 +30,17 @@ export default class MainPresenter {
         pointOffers: this.offersModel.get()
       }),
 
-      this.tripEventsComponent.getElement()
+      this.tripEventsComponent.element
     );
 
     this.points.forEach((point) => {
       render(
-        new TripListView({
+        new PointListView({
           point,
           pointDestination: this.destinationsModel.getById(point.destination),
           pointOffers: this.offersModel.getByType(point.type)
         }),
-        this.tripEventsComponent.getElement()
+        this.tripEventsComponent.element
       );
     });
   }
