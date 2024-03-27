@@ -1,7 +1,7 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 
-function createHeaderTravelTemplate () {
+function createHeaderTravelTemplate() {
   return (
     `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
@@ -16,21 +16,8 @@ function createHeaderTravelTemplate () {
 }
 
 
-export default class HeaderTravelView {
-  getTemplate () {
-    return createHeaderTravelTemplate ();
-  }
-
-
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-
-  removeElement () {
-    this.element = null;
+export default class HeaderTravelView extends AbstractView {
+  get template() {
+    return createHeaderTravelTemplate();
   }
 }

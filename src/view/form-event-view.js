@@ -1,28 +1,15 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 
-function createEventsListTemplate () {
+function createEventsListTemplate() {
 
   return `
   <ul class="trip-events__list">`;
 }
 
 
-export default class FormEventView {
-  getTemplate () {
-    return createEventsListTemplate ();
-  }
-
-
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-
-  removeElement () {
-    this.element = null;
+export default class FormEventView extends AbstractView {
+  get template() {
+    return createEventsListTemplate();
   }
 }
