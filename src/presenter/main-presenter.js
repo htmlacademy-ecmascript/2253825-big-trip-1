@@ -1,10 +1,9 @@
-import { render, replace, RenderPosition } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 
 import TripSortView from '../view/trip-sort-view.js';
 import FormEventView from '../view/form-event-view.js';
-import FormEditEvent from '../view/edit-event-view.js';
+import EditEventView from '../view/edit-event-view.js';
 import PointListView from '../view/point-list-view.js';
-import NoPointView from '../view/no-point-view.js';
 
 export default class MainPresenter {
   #tripMainContainer = null;
@@ -31,10 +30,10 @@ export default class MainPresenter {
 
 
   #renderTripEvents() {
-    if (!this.#renderPoints.length) {
-      render(new NoPointView(), this.#tripMainContainer, RenderPosition.BEFOREBEGIN);
-      return;
-    }
+    // if (!this.#renderPoints.length) {
+    //   render(new NoPointView(), this.#tripMainContainer, RenderPosition.BEFOREBEGIN);
+    //   return;
+    // }
 
     render(this.#tripSortComponent, this.#tripMainContainer);
     render(this.#tripEventsComponent, this.#tripMainContainer);
@@ -71,7 +70,7 @@ export default class MainPresenter {
       }
     });
 
-    const editEvent = new FormEditEvent({
+    const editEvent = new EditEventView({
       point: this.#pointsModel[0],
       pointDestinations: this.#destinationsModel.destinations,
       pointOffers: this.#offersModel.offers,

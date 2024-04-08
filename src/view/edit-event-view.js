@@ -137,7 +137,7 @@ function createEditPointTemplate ({ point, pointDestinations, pointOffers }) {
   );
 }
 
-export default class FormEditEvent extends AbstractView {
+export default class EditEventView extends AbstractView {
 
   #point = null;
   #pointDestinations = null;
