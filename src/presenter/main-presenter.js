@@ -1,9 +1,10 @@
-import { render, replace } from '../framework/render.js';
+import { render, replace, RenderPosition } from '../framework/render.js';
 
 import TripSortView from '../view/trip-sort-view.js';
 import FormEventView from '../view/form-event-view.js';
 import EditEventView from '../view/edit-event-view.js';
 import PointListView from '../view/point-list-view.js';
+import NoPointView from '../view/no-point-view.js';
 
 export default class MainPresenter {
   #tripMainContainer = null;
@@ -24,16 +25,17 @@ export default class MainPresenter {
     this.#pointsModel = [ ...pointsModel.points];
   }
 
+
   init () {
     this.#renderTripEvents();
   }
 
 
   #renderTripEvents() {
-    // if (!this.#renderPoints.length) {
-    //   render(new NoPointView(), this.#tripMainContainer, RenderPosition.BEFOREBEGIN);
-    //   return;
-    // }
+    if (!this.#pointsModel.length) {
+      render(new NoPointView(), this.#tripMainContainer, RenderPosition.BEFOREBEGIN);
+      return;
+    }
 
     render(this.#tripSortComponent, this.#tripMainContainer);
     render(this.#tripEventsComponent, this.#tripMainContainer);
@@ -41,8 +43,8 @@ export default class MainPresenter {
     this.#renderPoints(this.#tripEventsPointList);
   }
 
-  #renderPoints() {
 
+  #renderPoints() {
     this.#pointsModel.forEach((point) => {
       this.#renderPoint(point);
     });
@@ -50,7 +52,6 @@ export default class MainPresenter {
 
 
   #renderPoint(point) {
-
     const escKeyDownHandler = (evt) => {
       if (evt.key === 'Escape') {
         evt.preventDefault();
