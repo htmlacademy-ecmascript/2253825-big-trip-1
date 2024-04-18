@@ -1,7 +1,7 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 
-function createFilterTimeTemplate () {
+function createFilterTimeTemplate() {
 
   return (
     `<div class="trip-main__trip-controls  trip-controls">
@@ -36,21 +36,8 @@ function createFilterTimeTemplate () {
 }
 
 
-export default class FilterTimeView {
-  getTemplate () {
-    return createFilterTimeTemplate ();
-  }
-
-
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-
-  removeElement () {
-    this.element = null;
+export default class FilterTimeView extends AbstractView {
+  get template() {
+    return createFilterTimeTemplate();
   }
 }

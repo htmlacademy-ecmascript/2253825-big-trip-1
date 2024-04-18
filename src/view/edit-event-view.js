@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { formatStringToDateTime } from '../utils.js';
 import { POINT_EMPTY } from '../const.js';
 
@@ -137,31 +137,44 @@ function createEditPointTemplate ({ point, pointDestinations, pointOffers }) {
   );
 }
 
-export default class FormEditEvent {
-  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers }) {
-    this.point = point;
-    this.pointDestinations = pointDestinations;
-    this.pointOffers = pointOffers;
+export default class EditEventView extends AbstractView {
+
+  #point = null;
+  #pointDestinations = null;
+  #pointOffers = null;
+  #handleFormSubmit = null;
+  #handleCloseEditFormButton = null;
+
+  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseEditFormButton }) {
+    super();
+    this.#point = point;
+    this.#pointDestinations = pointDestinations;
+    this.#pointOffers = pointOffers;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleCloseEditFormButton = onCloseEditFormButton;
+
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#formSubmitHandler);
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#closeEditFormButtonHandler);
   }
 
-  getTemplate () {
+  get template () {
     return createEditPointTemplate ({
-      point: this.point,
-      pointDestinations: this.pointDestinations,
-      pointOffers: this.pointOffers
+      point: this.#point,
+      pointDestinations: this.#pointDestinations,
+      pointOffers: this.#pointOffers
     });
   }
 
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-  getElement () {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-
-  removeElement () {
-    this.element = null;
-  }
+  #closeEditFormButtonHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditFormButton();
+  };
 }
