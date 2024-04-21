@@ -1,6 +1,6 @@
-import { getRandomInteger } from '../utils.js';
-import { Price } from './mock-const.js';
-import { getDate } from './mock-utils.js';
+import { getRandomInteger } from '../utils/common.js';
+import { Price } from './const.js';
+import { getDate } from './utils.js';
 
 
 function generatePoint (destinationId, offersId, type) {

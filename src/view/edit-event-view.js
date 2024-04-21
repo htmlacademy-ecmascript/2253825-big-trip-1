@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { formatStringToDateTime } from '../utils.js';
+import { formatStringToDateTime } from '../utils/formate.js';
 import { POINT_EMPTY } from '../const.js';
 
 
