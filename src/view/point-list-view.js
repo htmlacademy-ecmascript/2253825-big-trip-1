@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { formatStringToDateTime, formatStringToShortDate, formatDuration } from '../utils.js';
+import { formatStringToDateTime, formatStringToShortDate, formatDuration } from '../utils/format-time.js';
 
 
 function createOffersListTemplate(pointOffers) {
