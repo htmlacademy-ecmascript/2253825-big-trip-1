@@ -21,8 +21,10 @@ const pointsModel = new PointsModel(mockService);
 
 const filters = generateFilter(pointsModel);
 
-const headerPresenter = new HeaderPresenter({ tripInfoContainer: siteTripInfo,
-  tripFilterContainer: siteFilters, filters: filters });
+const headerPresenter = new HeaderPresenter({
+  tripFilterContainer: siteFilters,
+  siteTripInfo,
+  filters: filters });
 
 const mainPresenter = new MainPresenter({
   tripMainContainer: tripMainEvents,
