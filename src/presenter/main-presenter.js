@@ -1,10 +1,14 @@
 import { render, replace, RenderPosition } from '../framework/render.js';
 
+import HeaderPresenter from './header-presenter.js';
+
 import TripSortView from '../view/trip-sort-view.js';
 import FormEventView from '../view/form-event-view.js';
-import EditEventView from '../view/edit-event-view.js';
-import PointListView from '../view/point-list-view.js';
+import EditPointView from '../view/edit-point-view.js';//
+import PointListView from '../view/point-list-view.js';//
 import NoPointView from '../view/no-point-view.js';
+
+import { generateFilter } from '../mock/filter.js';
 
 export default class MainPresenter {
   #tripMainContainer = null;
@@ -18,15 +22,23 @@ export default class MainPresenter {
   #tripEventsPointList = [];
 
 
-  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel }) {
+  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, tripFilterContainer }) {
     this.#tripMainContainer = tripMainContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = [ ...pointsModel.points];
+
+    const filters = generateFilter(pointsModel);
+
+    this.headerPresenter = new HeaderPresenter({
+      tripFilterContainer: tripFilterContainer,
+      filters: filters
+    });
   }
 
 
   init () {
+    this.headerPresenter.init();
     this.#renderTripEvents();
   }
 
@@ -50,7 +62,6 @@ export default class MainPresenter {
     });
   }
 
-
   #renderPoint(point) {
     const escKeyDownHandler = (evt) => {
       if (evt.key === 'Escape') {
@@ -71,7 +82,7 @@ export default class MainPresenter {
       }
     });
 
-    const editEvent = new EditEventView({
+    const editEvent = new EditPointView({
       point: this.#pointsModel[0],
       pointDestinations: this.#destinationsModel.destinations,
       pointOffers: this.#offersModel.offers,
