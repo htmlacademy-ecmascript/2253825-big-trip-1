@@ -1,11 +1,12 @@
-import { render, replace, RenderPosition } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 
 import HeaderPresenter from './header-presenter.js';
+import PointPresenter from './point-presenter.js';
 
 import TripSortView from '../view/trip-sort-view.js';
-import FormEventView from '../view/form-event-view.js';
-import EditPointView from '../view/edit-point-view.js';//
-import PointListView from '../view/point-list-view.js';//
+import EventsListView from '../view/events-list-view.js';
+// import EditPointView from '../view/edit-point-view.js';
+// import PointListView from '../view/point-list-view.js';
 import NoPointView from '../view/no-point-view.js';
 
 import { generateFilter } from '../mock/filter.js';
@@ -17,9 +18,9 @@ export default class MainPresenter {
   #pointsModel = null;
 
   #tripSortComponent = new TripSortView();
-  #tripEventsComponent = new FormEventView();
+  #tripEventsComponent = new EventsListView();
 
-  #tripEventsPointList = [];
+  #tripEventsPoints = [];
 
 
   constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, tripFilterContainer }) {
@@ -52,7 +53,7 @@ export default class MainPresenter {
     render(this.#tripSortComponent, this.#tripMainContainer);
     render(this.#tripEventsComponent, this.#tripMainContainer);
 
-    this.#renderPoints(this.#tripEventsPointList);
+    this.#renderPoints(this.#tripEventsPoints);
   }
 
 
@@ -63,6 +64,9 @@ export default class MainPresenter {
   }
 
   #renderPoint(point) {
+    const pointPresenter = new PointPresenter({tripPointsContainer: this.#tripEventsComponent.element});
+    pointPresenter.init(point, this.#destinationsModel.destinations, this.#offersModel.offers);
+    /*
     const escKeyDownHandler = (evt) => {
       if (evt.key === 'Escape') {
         evt.preventDefault();
@@ -109,5 +113,6 @@ export default class MainPresenter {
 
 
     render(pointList, this.#tripEventsComponent.element);
+*/
   }
 }

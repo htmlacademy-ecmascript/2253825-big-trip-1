@@ -1,70 +1,72 @@
-// import { replace, render } from '../framework/render.js';
+import { replace, render } from '../framework/render.js';
 
-// import PointListView from '../view/point-list-view.js';
-// import EditPointView from '../view/edit-point-view.js';
+import EditPointView from '../view/edit-point-view.js';
+import PointListView from '../view/point-list-view.js';
+
+export default class PointPresenter {
+  #tripPointsContainer = null;
+  #point = null;
+  #allOffers = null;
+  #allDestinations = null;
+
+  #tripComponent = null;
+  #tripEditComponent = null;
+
+  constructor({ tripPointsContainer }) {
+    this.#tripPointsContainer = tripPointsContainer;
+  }
+
+  init(tripPoint, allOffers, allDestinations) {
+    this.#point = tripPoint;
+    this.#allOffers = allOffers;
+    this.#allDestinations = allDestinations;
 
 
-// export default class PointPresenter {
-//   #tripPointsContainer = null;
-//   #point = null;
-//   #offers = null;
-//   #destinations = null;
+    this.#tripComponent = new PointListView({
+      tripPoint: this.#point,
+      allOffers: this.#allOffers,
+      allDestinations: this.#allDestinations,
+      onEditClick: this.#handleEditClick,
+    });
 
-//   #tripPointComponent = null;
-//   #tripEditComponent = null;
 
-//   constructor({ tripPointsContainer }) {
-//     this.#tripPointsContainer = tripPointsContainer;
-//   }
+    this.#tripEditComponent = new EditPointView({
+      tripPoint: this.#point,
+      allOffers: this.#allOffers,
+      allDestinations: this.#allDestinations,
+      onFormSubmit: this.#handleFormSubmit,
+      onCloseEditFormButton: this.#handleCloseEditFormButton,
+    });
 
-//   init(tripPoint, allOffers, allDestinations) {
-//     this.#point = tripPoint;
-//     this.#offers = allOffers;
-//     this.#destinations = allDestinations;
+    render(this.#tripComponent, this.#tripPointsContainer);
+  }
 
-//     this.#tripPointComponent = new PointListView({
-//       tripPoint: this.#point,
-//       onEditClick: this.#handleEditClick,
-//     });
+  #replaceCardToForm() {
+    replace(this.#tripEditComponent, this.#tripComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+  }
 
-//     this.#tripEditComponent = new EditPointView({
-//       tripPoint: this.#point,
-//       allOffers: this.#offers,
-//       allDestinations: this.#destinations,
+  #replaceFormToCard() {
+    replace(this.#tripComponent, this.#tripEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
 
-//       onFormSubmit: this.#handleFormSubmit,
-//       onCloseEditFormButton: this.#handleCloseEditFormButton,
-//     });
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.#replaceFormToCard();
+    }
+  };
 
-//     render(this.#tripPointComponent, this.#tripPointsContainer);
-//   }
+  #handleEditClick = () => {
+    this.#replaceCardToForm();
+  };
 
-//   #replaceCardToForm() {
-//     replace(this.#tripEditComponent, this.#tripPointComponent);
-//     document.addEventListener('keydown', this.#escKeyDownHandler);
-//   }
+  #handleFormSubmit = () => {
+    this.#replaceFormToCard();
+  };
 
-//   #replaceFormToCard() {
-//     replace(this.#tripPointComponent, this.#tripEditComponent);
-//     document.removeEventListener('keydown', this.#escKeyDownHandler);
-//   }
-
-//   #escKeyDownHandler = (evt) => {
-//     if (evt.key === 'Escape') {
-//       evt.preventDefault();
-//       this.#replaceFormToCard();
-//     }
-//   };
-
-//   #handleEditClick = () => {
-//     this.#replaceCardToForm();
-//   };
-
-//   #handleFormSubmit = () => {
-//     this.#replaceFormToCard();
-//   };
-
-//   #handleCloseEditFormButton = () => {
-//     this.#replaceFormToCard();
-//   };
-// }
+  #handleCloseEditFormButton = () => {
+    this.#replaceFormToCard();
+  };
+}
