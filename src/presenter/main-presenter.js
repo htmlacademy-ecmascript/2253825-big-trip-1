@@ -5,14 +5,13 @@ import PointPresenter from './point-presenter.js';
 
 import TripSortView from '../view/trip-sort-view.js';
 import EventsListView from '../view/events-list-view.js';
-// import EditPointView from '../view/edit-point-view.js';
-// import PointListView from '../view/point-list-view.js';
 import NoPointView from '../view/no-point-view.js';
 
 import { generateFilter } from '../mock/filter.js';
 
 export default class MainPresenter {
   #tripMainContainer = null;
+
   #destinationsModel = null;
   #offersModel = null;
   #pointsModel = null;
@@ -64,55 +63,12 @@ export default class MainPresenter {
   }
 
   #renderPoint(point) {
-    const pointPresenter = new PointPresenter({tripPointsContainer: this.#tripEventsComponent.element});
-    pointPresenter.init(point, this.#destinationsModel.destinations, this.#offersModel.offers);
-    /*
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replacePointToEdit();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const pointList = new PointListView({
-      point,
-      pointDestination: this.#destinationsModel.getById(point.destination),
-      pointOffers: this.#offersModel.getByType(point.type),
-
-      onEditClick: () => {
-        replaceEditToPoint();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+    const pointPresenter = new PointPresenter({
+      tripPointsContainer: this.#tripEventsComponent.element,
+      destinationsModel: this.#destinationsModel,
+      offersModel:this.#offersModel
     });
 
-    const editEvent = new EditPointView({
-      point: this.#pointsModel[0],
-      pointDestinations: this.#destinationsModel.destinations,
-      pointOffers: this.#offersModel.offers,
-
-      onCloseEditFormButton: () => {
-        replacePointToEdit();
-      },
-
-      onFormSubmit: () => {
-        replacePointToEdit();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    });
-
-
-    function replaceEditToPoint() {
-      replace(editEvent, pointList);
-    }
-
-
-    function replacePointToEdit() {
-      replace(pointList, editEvent);
-    }
-
-
-    render(pointList, this.#tripEventsComponent.element);
-*/
+    pointPresenter.init(point);
   }
 }
