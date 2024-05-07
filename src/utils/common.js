@@ -13,6 +13,10 @@ function getRandomValue(items) {
 }
 
 
-export { getRandomInteger, getRandomValue };
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export { getRandomInteger, getRandomValue, updateItem };
 
 
