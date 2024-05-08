@@ -35,4 +35,21 @@ function formatDuration(dateFrom, dateTo) {
 }
 
 
-export { formatStringToDateTime, formatStringToShortDate, formatDuration };
+function getPointsByDate(pointA, pointB) {
+  return dayjs(pointB.dateFrom).diff(dayjs(pointA.dateFrom));
+}
+
+
+function getPointsByDuration(pointA, pointB) {
+  const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+  return durationB - durationA;
+}
+
+function getPointsByPrice(pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
+}
+
+
+export { formatStringToDateTime, formatStringToShortDate, formatDuration,
+  getPointsByDate, getPointsByDuration, getPointsByPrice };
