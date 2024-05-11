@@ -6,9 +6,8 @@ import HeaderTravelView from '../view/header-travel-view.js';
 
 export default class HeaderPresenter {
 
-  constructor ({ tripInfoContainer, tripFilterContainer, filters }) {
+  constructor ({ tripFilterContainer, filters }) {
 
-    this.tripInfoContainer = tripInfoContainer;
     this.tripFilterContainer = tripFilterContainer;
 
     this.tripInfoComponent = new HeaderTravelView();
