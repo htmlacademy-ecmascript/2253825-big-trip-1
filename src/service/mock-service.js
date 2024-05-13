@@ -11,7 +11,7 @@ export default class MockService {
   #offers = [];
   #points = [];
 
-  constructor () {
+  constructor() {
     this.#destinations = this.generateDestinations();
     this.#offers = this.generateOffers();
     this.#points = this.generatePoints();
