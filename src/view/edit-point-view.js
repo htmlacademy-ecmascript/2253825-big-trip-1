@@ -2,6 +2,8 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatStringToDateTime } from '../utils/format-time.js';
 import { POINT_EMPTY } from '../const.js';
 
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 function createDestinationDescription (pointDestinations) {
   return (
