@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatStringToDateTime } from '../utils/format-time.js';
 import { POINT_EMPTY } from '../const.js';
 
@@ -12,11 +12,9 @@ function createDestinationDescription (pointDestinations) {
   );
 }
 
-function createEditPointTemplate ({ point, pointDestinations, pointOffers }) {
-
-  const {
-    basePrice, dateFrom, dateTo, offers, type
-  } = point;
+function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
+  const { point } = state;
+  const { basePrice, dateFrom, dateTo, offers, type } = point;
 
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
 
@@ -137,9 +135,8 @@ function createEditPointTemplate ({ point, pointDestinations, pointOffers }) {
   );
 }
 
-export default class EditPointView extends AbstractView {
+export default class EditPointView extends AbstractStatefulView {
 
-  #point = null;
   #pointDestinations = null;
   #pointOffers = null;
   #handleFormSubmit = null;
@@ -147,34 +144,128 @@ export default class EditPointView extends AbstractView {
 
   constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseEditFormButton }) {
     super();
-    this.#point = point;
+
+    const { destinationForPoint } = point;
+    this.destinationForPoint = destinationForPoint;
+    this._setState(EditPointView.parsePointToState({ point }));
+
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
 
-    this.element.querySelector('form')
-      .addEventListener('submit', this.#formSubmitHandler);
-
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#closeEditFormButtonHandler);
+    this._restoreHandlers();
   }
 
   get template () {
     return createEditPointTemplate ({
-      point: this.#point,
+      state: this._state,
       pointDestinations: this.#pointDestinations,
-      pointOffers: this.#pointOffers
+      pointOffers: this.#pointOffers,
+      destinationForPoint: this._state.destinationForPoint
     });
   }
 
+  reset = (point) => this.updateElement({ point });
+
+  _restoreHandlers = () => {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelectorAll('.event__type-input').forEach((element) => {
+      element.addEventListener('change', this.#typeInputClick);
+    });
+
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceInputChange);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationInputChange);
+
+    const offerBlock = this.element.querySelector('.event__available-offers');
+
+    if (offerBlock) {
+      offerBlock.addEventListener('change', this.#offerClickHanlder);
+    }
+  };
+
+
   #formSubmitHandler = (evt) => {
+
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+  };
+
+
+  #typeInputClick = (evt) => {
+
+    evt.preventDefault();
+
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        type: evt.target.value,
+        offers: []
+      }
+    });
+  };
+
+
+  #offerClickHanlder = (evt) => {
+
+    evt.preventDefault();
+
+    const newCheckedOffersForPoint = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'))
+      .map((offer) => offer.dataset.offerId);
+
+    this._setState({
+      ...this._state,
+      point: {
+        ...this._state.point,
+        offers: newCheckedOffersForPoint,
+        checkedOffersForPoint: this.#pointOffers
+          .find((offer) => offer.type === this._state.point.type).offers
+          .filter((offer) => newCheckedOffersForPoint.includes(offer.id))
+      },
+    });
+  };
+
+
+  #priceInputChange = (evt) => {
+
+    evt.preventDefault();
+
+    this._setState({
+      point: {
+        ...this._state.point,
+        basePrice: evt.target.value
+      }
+    });
   };
 
   #closeEditFormButtonHandler = (evt) => {
     evt.preventDefault();
     this.#handleCloseEditFormButton();
   };
+
+
+  #destinationInputChange = (evt) => {
+
+    evt.preventDefault();
+
+    const selectedDestination = this.#pointDestinations
+      .find((destination) => destination.name === evt.target.value);
+
+    const selectedDestinationId = (selectedDestination)
+      ? selectedDestination.id
+      : null;
+
+    this.updateElement({
+      tripPoint: {
+        ...this._state.point,
+        destinationForPoint: selectedDestination,
+        destination: selectedDestinationId
+      }
+    });
+  };
+
+  static parsePointToState = ({ point }) => ({ point });
+
+  static parseStateToPoint = (state) => state.point;
 }
