@@ -2,8 +2,6 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatStringToDateTime } from '../utils/format-time.js';
 import { POINT_EMPTY } from '../const.js';
 
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
 
 function createDestinationDescription (pointDestinations) {
   return (
@@ -119,8 +117,8 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
         </section>
 
         <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          ${createDestinationDescription (pointDestinations)}
+          <h3 class="event__section-title  event__section-title--destination"></h3>
+          ${createDestinationDescription(pointDestinations)}
           <div class="event__photos-container">
             <div class="event__photos-tape">
 
@@ -143,14 +141,11 @@ export default class EditPointView extends AbstractStatefulView {
   #pointOffers = null;
   #handleFormSubmit = null;
   #handleCloseEditFormButton = null;
-  #datepickerFrom = null;
-  #datepickerTo = null;
 
-  constructor({ point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseEditFormButton }) {
+
+  constructor(
+    { point = POINT_EMPTY, pointDestinations, pointOffers, onFormSubmit, onCloseEditFormButton }) {
     super();
-
-    // const { destinationForPoint } = point;
-    // this.destinationForPoint = destinationForPoint;
 
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
@@ -167,13 +162,12 @@ export default class EditPointView extends AbstractStatefulView {
       state: this._state,
       pointDestinations: this.#pointDestinations,
       pointOffers: this.#pointOffers,
-      //destinationForPoint: this._state.destinationForPoint
     });
   }
 
   reset (point) {
     this.updateElement(
-      EditPointView.parsePointToState({point}),
+      EditPointView.parsePointToState(point),
     );
   }
 
@@ -192,73 +186,11 @@ export default class EditPointView extends AbstractStatefulView {
     if (offerBlock) {
       offerBlock.addEventListener('change', this.#offerClickHanlder);
     }
-
-    this.#setDatepickers();
   };
 
-  #setDatepickers = () => {
-    this.#datepickerFrom = flatpickr(
-      this.element.querySelector('#event-start-time-1'),
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.point.dateFrom,
-        onClose: this.#dateFromChangeHandler,
-        enableTime: true,
-        maxDate: this._state.point.dateTo,
-        locale: {
-          firstDayOfWeek: 1
-        },
-        'time_24hr': true
-      });
-
-    this.#datepickerTo = flatpickr(
-      this.element.querySelector('#event-end-time-1'),
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.point.dateTo,
-        onClose: this.#dateToChangeHandler,
-        enableTime: true,
-        minDate: this._state.point.dateFrom,
-        locale: {
-          firstDayOfWeek: 1
-        },
-        'time_24hr': true
-      }
-    );
-  };
-
-  #dateFromChangeHandler = ([userDate]) => {
-    this._setState({
-      point: {
-        ...this._state.point,
-        dateFrom: userDate
-      }
-    });
-    this.#datepickerTo.set('minDate', this._state.tripPoint.dateFrom);
-  };
-
-  #dateToChangeHandler = ([userDate]) => {
-    this._setState({
-      point: {
-        ...this._state.point,
-        dateTo: userDate
-      }
-    });
-    this.#datepickerFrom.set('maxDate', this._state.point.dateTo);
-  };
 
   removeElement = () => {
     super.removeElement();
-
-    if(this.#datepickerFrom){
-      this.#datepickerFrom.destroy();
-      this.#datepickerFrom = null;
-    }
-
-    if(this.#datepickerTo){
-      this.#datepickerTo.destroy();
-      this.#datepickerTo = null;
-    }
   };
 
 
@@ -268,15 +200,23 @@ export default class EditPointView extends AbstractStatefulView {
     this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
   };
 
+  #closeEditFormButtonHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditFormButton();
+  };
 
   #typeInputClick = (evt) => {
-
     evt.preventDefault();
+
+    const newTypeOffers = this.#pointOffers
+      .find((offer) => offer.type === evt.target.value)
+      ?.offers ?? [];
 
     this.updateElement({
       point: {
         ...this._state.point,
         type: evt.target.value,
+        neededPoint: newTypeOffers,
         offers: []
       }
     });
@@ -284,64 +224,59 @@ export default class EditPointView extends AbstractStatefulView {
 
 
   #offerClickHanlder = (evt) => {
-
     evt.preventDefault();
 
-    const newCheckedOffersForPoint = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'))
+    const checkedOffersForPoint = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'))
       .map((offer) => offer.dataset.offerId);
 
     this._setState({
       ...this._state,
       point: {
         ...this._state.point,
-        offers: newCheckedOffersForPoint,
-        checkedOffersForPoint: this.#pointOffers
+        offers: checkedOffersForPoint,
+        neededOffers: this.#pointOffers
           .find((offer) => offer.type === this._state.point.type).offers
-          .filter((offer) => newCheckedOffersForPoint.includes(offer.id))
-      },
+          .filter((offer) => checkedOffersForPoint.includes(offer.id.toString()))
+      }
     });
   };
 
 
   #priceInputChange = (evt) => {
-
     evt.preventDefault();
 
     this._setState({
-      point: {
-        ...this._state.point,
-        basePrice: evt.target.value
-      }
+      basePrice: evt.target.value
     });
-  };
-
-  #closeEditFormButtonHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleCloseEditFormButton();
   };
 
 
   #destinationInputChange = (evt) => {
-
     evt.preventDefault();
 
+    const selectedDestinationName = evt.target.value;
     const selectedDestination = this.#pointDestinations
-      .find((destination) => destination.name === evt.target.value);
+      .find((destination) => destination.name === selectedDestinationName);
 
-    const selectedDestinationId = (selectedDestination)
-      ? selectedDestination.id
-      : null;
+    if (selectedDestination) {
+      const updatedDestinationForPoint = {
+        ...selectedDestination,
+      };
 
-    this.updateElement({
-      tripPoint: {
-        ...this._state.point,
-        destinationForPoint: selectedDestination,
-        destination: selectedDestinationId
-      }
-    });
+      this.updateElement({
+        destinationForPoint: updatedDestinationForPoint,
+        destination: selectedDestination.id
+      });
+
+    } else {
+      this.updateElement({
+        destinationForPoint: POINT_EMPTY.destinationForPoint,
+        destination: null
+      });
+    }
   };
 
-  static parsePointToState = ({ point }) => ({ point });
+  static parsePointToState = ({point}) => ({point});
 
   static parseStateToPoint = (state) => state.point;
 }

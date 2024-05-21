@@ -1,8 +1,8 @@
-const OFFER_COUNT = 3;
+const OFFER_COUNT = 4;
 
 const DESTINATION_COUNT = 1;
 
-const POINT_COUNT = 6;
+const POINT_COUNT = 9;
 
 const TYPES = [
   'Taxi',
@@ -33,7 +33,7 @@ const POINT_EMPTY = {
   destination: null,
   isFavorite: false,
   offers: [],
-  type: DEFAULT_TYPE
+  type: DEFAULT_TYPE,
 };
 
 
