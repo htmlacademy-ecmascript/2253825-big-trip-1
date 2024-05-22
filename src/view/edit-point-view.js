@@ -157,7 +157,7 @@ export default class EditPointView extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
-  get template () {
+  get template() {
     return createEditPointTemplate ({
       state: this._state,
       pointDestinations: this.#pointDestinations,
@@ -165,7 +165,7 @@ export default class EditPointView extends AbstractStatefulView {
     });
   }
 
-  reset (point) {
+  reset(point) {
     this.updateElement(
       EditPointView.parsePointToState(point),
     );
@@ -195,7 +195,6 @@ export default class EditPointView extends AbstractStatefulView {
 
 
   #formSubmitHandler = (evt) => {
-
     evt.preventDefault();
     this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
   };
@@ -208,15 +207,10 @@ export default class EditPointView extends AbstractStatefulView {
   #typeInputClick = (evt) => {
     evt.preventDefault();
 
-    const newTypeOffers = this.#pointOffers
-      .find((offer) => offer.type === evt.target.value)
-      ?.offers ?? [];
-
     this.updateElement({
       point: {
         ...this._state.point,
         type: evt.target.value,
-        neededPoint: newTypeOffers,
         offers: []
       }
     });
@@ -246,7 +240,10 @@ export default class EditPointView extends AbstractStatefulView {
     evt.preventDefault();
 
     this._setState({
-      basePrice: evt.target.value
+      point: {
+        ...this._state.point,
+        basePrice: evt.target.value
+      }
     });
   };
 
@@ -254,26 +251,17 @@ export default class EditPointView extends AbstractStatefulView {
   #destinationInputChange = (evt) => {
     evt.preventDefault();
 
-    const selectedDestinationName = evt.target.value;
     const selectedDestination = this.#pointDestinations
-      .find((destination) => destination.name === selectedDestinationName);
+      .find((destination) => destination.name === evt.target.value);
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
 
-    if (selectedDestination) {
-      const updatedDestinationForPoint = {
-        ...selectedDestination,
-      };
-
-      this.updateElement({
-        destinationForPoint: updatedDestinationForPoint,
-        destination: selectedDestination.id
-      });
-
-    } else {
-      this.updateElement({
-        destinationForPoint: POINT_EMPTY.destinationForPoint,
-        destination: null
-      });
-    }
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        destinationForPoint: selectedDestination,
+        destination: selectedDestinationId
+      }
+    });
   };
 
   static parsePointToState = ({point}) => ({point});
