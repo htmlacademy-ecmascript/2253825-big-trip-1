@@ -60,9 +60,9 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
 
           ${pointDestinations.map((city) => (
       `<input class="event__input  event__input--destination"
-               id="event-destination-${point.id}" type="text" name="event-destination" value="${city.name}"
-                list="destination-list-${point.id}">
-               <datalist id="destination-list-${point.id}">
+               id="event-destination-id="event-destination-1" type="text" name="event-destination" value="${city.name}"
+               list="destination-list-1">
+               <datalist id="destination-list-1">
           <option value="${city.name}"></option>`))
       .join('')}
 
@@ -165,11 +165,13 @@ export default class EditPointView extends AbstractStatefulView {
     });
   }
 
-  reset(point) {
-    this.updateElement(
-      EditPointView.parsePointToState(point),
-    );
-  }
+  reset = (point) => this.updateElement({point});
+
+  // reset(point) {
+  //   this.updateElement(
+  //     EditPointView.parsePointToState(point),
+  //   );
+  // }
 
   _restoreHandlers = () => {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);

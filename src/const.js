@@ -34,11 +34,6 @@ const POINT_EMPTY = {
   isFavorite: false,
   offers: [],
   type: DEFAULT_TYPE,
-  destinationForPoint: {
-    description: '',
-    name: '',
-    pictures: []
-  },
 };
 
 
