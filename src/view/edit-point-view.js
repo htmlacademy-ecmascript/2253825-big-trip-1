@@ -165,13 +165,11 @@ export default class EditPointView extends AbstractStatefulView {
     });
   }
 
-  reset = (point) => this.updateElement({point});
-
-  // reset(point) {
-  //   this.updateElement(
-  //     EditPointView.parsePointToState(point),
-  //   );
-  // }
+  reset(point) {
+    this.updateElement(
+      EditPointView.parsePointToState({point}),
+    );
+  }
 
   _restoreHandlers = () => {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditFormButtonHandler);
@@ -222,17 +220,12 @@ export default class EditPointView extends AbstractStatefulView {
   #offerClickHanlder = (evt) => {
     evt.preventDefault();
 
-    const checkedOffersForPoint = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'))
-      .map((offer) => offer.dataset.offerId);
+    const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
 
     this._setState({
-      ...this._state,
       point: {
         ...this._state.point,
-        offers: checkedOffersForPoint,
-        neededOffers: this.#pointOffers
-          .find((offer) => offer.type === this._state.point.type).offers
-          .filter((offer) => checkedOffersForPoint.includes(offer.id.toString()))
+        offers: checkedBoxes.map((offer) => offer.dataset.offerId)
       }
     });
   };
