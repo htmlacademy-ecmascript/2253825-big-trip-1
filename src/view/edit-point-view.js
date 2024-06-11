@@ -337,15 +337,22 @@ export default class EditPointView extends AbstractStatefulView {
     const selectedDestination = this.#pointDestinations
       .find((destination) => destination.name === evt.target.value);
 
-    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
+    if (selectedDestination) {
+      const updatedDestinationForPoint = {
+        ...selectedDestination,
+      };
 
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        destinationForPoint: selectedDestination,
-        destination: selectedDestinationId
-      }
-    });
+      this.updateElement({
+        destinationForPoint: updatedDestinationForPoint,
+        destination: selectedDestination.id
+      });
+
+    } else {
+      this.updateElement({
+        destinationForPoint: EMPTY_POINT.destinationForPoint,
+        destination: null
+      });
+    }
   };
 
   static parsePointToState = ({point}) => ({point});
