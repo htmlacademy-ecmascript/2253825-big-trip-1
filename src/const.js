@@ -1,6 +1,6 @@
 const OFFER_COUNT = 4;
 
-const DESTINATION_COUNT = 1;
+const DESTINATION_COUNT = 5;
 
 const POINT_COUNT = 9;
 

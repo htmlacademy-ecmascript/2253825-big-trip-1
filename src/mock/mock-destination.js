@@ -19,7 +19,7 @@ function generateDestination () {
   return {
     id: crypto.randomUUID(),
     description: getRandomValue(DESCRIPTION),
-    name: CITY,
+    name: getRandomValue(CITIES),
     pictures: generatePictures()
   };
 }

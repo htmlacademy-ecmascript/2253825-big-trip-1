@@ -28,14 +28,15 @@ function createDestinationDescription(pointDestinations) {
 }
 
 function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
+
   const { point } = state;
+
   const { basePrice, dateFrom, dateTo, offers, type } = point;
 
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
 
-
-  // Temporary const
-  const destination = pointDestinations[0];
+  const destination = state.point.destinationForPoint;
+  const currentDestination = pointDestinations.find((place) => place.id);
 
   const neededOffers = neededPoint.offers;
   const hasOffersForType = neededOffers.length > 0;
@@ -82,7 +83,8 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
 
 
       <input class="event__input  event__input--destination"
-      id="event-destination-id="event-destination-1" type="text" name="event-destination" value=""
+      id="event-destination-id="event-destination-1" type="text" name="event-destination"
+       value="${currentDestination.name}"
                list="destination-list-1">
                <datalist id="destination-list-1">
                ${pointDestinations.map((city) => (
@@ -233,8 +235,10 @@ export default class EditPointView extends AbstractStatefulView {
         },
         'time_24hr': true
       });
+
     this.#datepickerTo = flatpickr(
       this.element.querySelector('#event-end-time-1'),
+
       {
         dateFormat: 'd/m/y H:i',
         defaultDate: this._state.dateTo,
@@ -337,22 +341,15 @@ export default class EditPointView extends AbstractStatefulView {
     const selectedDestination = this.#pointDestinations
       .find((destination) => destination.name === evt.target.value);
 
-    if (selectedDestination) {
-      const updatedDestinationForPoint = {
-        ...selectedDestination,
-      };
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
 
-      this.updateElement({
-        destinationForPoint: updatedDestinationForPoint,
-        destination: selectedDestination.id
-      });
-
-    } else {
-      this.updateElement({
-        destinationForPoint: EMPTY_POINT.destinationForPoint,
-        destination: null
-      });
-    }
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        destinationForPoint: selectedDestination,
+        destination: selectedDestinationId
+      }
+    });
   };
 
   static parsePointToState = ({point}) => ({point});
