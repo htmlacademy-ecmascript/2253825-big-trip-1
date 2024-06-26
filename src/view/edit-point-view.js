@@ -1,4 +1,3 @@
-
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { formatStringToDateTime } from '../utils/format-time.js';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -33,14 +32,16 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
 
   const { basePrice, dateFrom, dateTo, offers, type } = point;
 
+
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
 
   const destination = state.point.destinationForPoint;
-  const currentDestination = pointDestinations.find((place) => place.id);
 
   const neededOffers = neededPoint.offers;
+
   const hasOffersForType = neededOffers.length > 0;
   const hideOffersSection = !hasOffersForType;
+
   const hideDesinationSection = !destination;
   const hideEventDetailsSection = hideOffersSection && hideDesinationSection;
 
@@ -82,16 +83,13 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
           </label>
 
 
-      <input class="event__input  event__input--destination"
-      id="event-destination-id="event-destination-1" type="text" name="event-destination"
-       value="${currentDestination.name}"
-               list="destination-list-1">
-               <datalist id="destination-list-1">
-               ${pointDestinations.map((city) => (
-      `<option value="${city.name}"></option>`))
+      <select class="event__input  event__input--destination"
+      id="event-destination-1" name="event-destination">
+               ${pointDestinations.map(({name}) => (
+      `<option value="${name}" ${destination?.name === name ? 'selected' : ''}>${name}</option>`))
       .join('')}
 
-          </datalist>
+          </select>
         </div>
 
 
@@ -281,7 +279,6 @@ export default class EditPointView extends AbstractStatefulView {
     }
   };
 
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
@@ -307,7 +304,6 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-
   #offerClickHanlder = (evt) => {
     evt.preventDefault();
 
@@ -322,7 +318,6 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-
   #priceInputChange = (evt) => {
     evt.preventDefault();
 
@@ -333,7 +328,6 @@ export default class EditPointView extends AbstractStatefulView {
       }
     });
   };
-
 
   #destinationInputChange = (evt) => {
     evt.preventDefault();
