@@ -17,6 +17,7 @@ const EMPTY_POINT = {
   type: 'flight',
 };
 
+
 function createDestinationDescription(destination) {
   return `<h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
               <p class="event__destination-description">${destination.description}</p>`;
