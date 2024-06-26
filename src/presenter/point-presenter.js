@@ -21,7 +21,7 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  constructor({ tripPointsContainer, destinationsModel, offersModel, onDataChange, onModeChange}) {
+  constructor({ tripPointsContainer, destinationsModel, offersModel, onDataChange, onModeChange }) {
     this.#tripPointsContainer = tripPointsContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
@@ -91,6 +91,7 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
   }
+
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
