@@ -17,16 +17,12 @@ const EMPTY_POINT = {
   type: 'flight',
 };
 
-function createDestinationDescription(pointDestinations) {
-  return (
-    pointDestinations.map((destination) =>
-      `<h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
-              <p class="event__destination-description">${destination.description}</p>`)
-      .join('')
-  );
+function createDestinationDescription(destination) {
+  return `<h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
+              <p class="event__destination-description">${destination.description}</p>`;
 }
 
-function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
+function createEditPointTemplate({ state, pointDestinations, pointOffers }) {
 
   const { point } = state;
 
@@ -85,7 +81,7 @@ function createEditPointTemplate ({ state, pointDestinations, pointOffers }) {
 
       <select class="event__input  event__input--destination"
       id="event-destination-1" name="event-destination">
-               ${pointDestinations.map(({name}) => (
+               ${pointDestinations.map(({ name }) => (
       `<option value="${name}" ${destination?.name === name ? 'selected' : ''}>${name}</option>`))
       .join('')}
 
@@ -145,7 +141,7 @@ ${hideOffersSection ? '' : `
 
 ${hideDesinationSection ? '' : `
         <section class="event__section  event__section--destination">
-          ${createDestinationDescription(pointDestinations)}
+          ${createDestinationDescription(destination)}
           <div class="event__photos-container">
             <div class="event__photos-tape">
 
@@ -179,7 +175,12 @@ export default class EditPointView extends AbstractStatefulView {
 
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
-    this._setState(EditPointView.parsePointToState({point}));
+    this._setState(EditPointView.parsePointToState({
+      point: {
+        ...point,
+        destinationForPoint: this.#pointDestinations[0],
+      }
+    }));
 
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
@@ -188,7 +189,7 @@ export default class EditPointView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEditPointTemplate ({
+    return createEditPointTemplate({
       state: this._state,
       pointDestinations: this.#pointDestinations,
       pointOffers: this.#pointOffers
@@ -197,7 +198,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   reset(point) {
     this.updateElement(
-      EditPointView.parsePointToState({point}),
+      EditPointView.parsePointToState({ point }),
     );
   }
 
@@ -268,12 +269,12 @@ export default class EditPointView extends AbstractStatefulView {
   removeElement = () => {
     super.removeElement();
 
-    if(this.#datepickerFrom){
+    if (this.#datepickerFrom) {
       this.#datepickerFrom.destroy();
       this.#datepickerFrom = null;
     }
 
-    if(this.#datepickerTo){
+    if (this.#datepickerTo) {
       this.#datepickerTo.destroy();
       this.#datepickerTo = null;
     }
@@ -346,7 +347,7 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-  static parsePointToState = ({point}) => ({point});
+  static parsePointToState = ({ point }) => ({ point });
 
   static parseStateToPoint = (state) => state.point;
 }
