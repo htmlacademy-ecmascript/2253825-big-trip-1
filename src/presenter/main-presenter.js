@@ -22,7 +22,7 @@ export default class MainPresenter {
 
   #pointSortComponent = null;
   #eventListComponent = new EventsListView();
-  #noPointComponent = new NoPointView();
+  #noPointComponent = null;
 
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
@@ -152,6 +152,9 @@ export default class MainPresenter {
   }
 
   #renderNoPoints() {
+    this.#noPointComponent = new NoPointView({
+      filterType: this.#filterType
+    });
     render(this.#noPointComponent, this.#tripMainContainer, RenderPosition.AFTERBEGIN);
   }
 

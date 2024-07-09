@@ -1,30 +1,31 @@
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 import { SortType, sort } from '../utils/sort.js';
 import { UpdateType, FilterType } from '../const.js';
+import { Filters } from '../utils/filters.js';
 
 import FilterTimeView from '../view/filter-time-view.js';
 import TripInfoView from '../view/header-travel-view.js';
-import { Filters } from '../utils/filters.js';
-
+import NewPointButtonView from '../view/new-point-button-view';
 
 export default class HeaderPresenter {
 
-  // #destinationsModel = null;
-  // #offersModel = null;
   #pointsModel = null;
   #filterModel = null;
+  #clickModel = null;
 
+  #newPointButtonComponent = null;
   #tripFilterComponent = null;
   #tripInfoComponent = null;
 
   #points = null;
 
-  constructor ({ tripFilterContainer, filterModel, pointsModel }) {
+  constructor ({ tripFilterContainer, filterModel, pointsModel, clickModel }) {
 
     this.tripFilterContainer = tripFilterContainer;
 
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
+    this.#clickModel = clickModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -42,11 +43,24 @@ export default class HeaderPresenter {
   init () {
     this.#renderTripInfo();
     this.#renderFilters();
+    this.#renderNewButton();
+  }
+
+  #renderNewButton() {
+    this.#newPointButtonComponent = new NewPointButtonView({
+      onClick: this.#handleNewPointButtonClick()
+    });
+    render(this.#newPointButtonComponent, this.tripFilterContainer, RenderPosition.AFTERBEGIN);
+
+  }
+
+  #handleNewPointButtonClick () {
+    this.#clickModel.setClickState (UpdateType.MINOR, 'creating');
   }
 
   #renderTripInfo () {
     const prevTripInfoComponent = this.#tripInfoComponent;
-    this.#points = sort[SortType.DAY](this.#pointsModel.enrichedPoints);
+    this.#points = sort[SortType.DAY](this.#pointsModel.get());
 
     this.#tripInfoComponent = new TripInfoView({
       totalSumm: this.getTotalSumm(),
