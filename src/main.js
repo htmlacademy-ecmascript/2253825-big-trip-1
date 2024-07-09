@@ -1,10 +1,10 @@
 import MainPresenter from './presenter/main-presenter.js';
-
+import HeaderPresenter from './presenter/header-presenter.js';
 import MockService from './service/mock-service.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
-
+import { generateFilter } from './mock/filter.js';
 
 const siteBodyElement = document.querySelector('.page-header');
 const siteTripInfo = siteBodyElement.querySelector('.trip-main');
@@ -24,9 +24,15 @@ const mainPresenter = new MainPresenter({
   destinationsModel,
   offersModel,
   pointsModel,
-  tripFilterContainer: siteFilters,
-  siteTripInfo
 });
 
+const filters = generateFilter(pointsModel);
 
+const headerPresenter = new HeaderPresenter({
+  tripFilterContainer: siteFilters,
+  siteTripInfo,
+  filters: filters
+});
+
+headerPresenter.init();
 mainPresenter.init();

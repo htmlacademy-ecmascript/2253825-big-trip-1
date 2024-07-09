@@ -51,6 +51,7 @@ export default class PointPresenter {
       pointOffers: this.#offersModel.get(),
       onFormSubmit: this.#handleFormSubmit,
       onCloseEditFormButton: this.#handleCloseEditFormButton,
+      onDeleteEditFormButton: this.#handleDeleteEditFormButton
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -102,7 +103,11 @@ export default class PointPresenter {
     }
   };
 
-  #handleEditClick = (update) => {
+  #handleEditClick = () => {
+    this.#replaceCardToForm();
+  };
+
+  #handleFormSubmit = (update) => {
     const isMinorUpdate = isSameDates(this.#point.dateFrom, update.dateFrom)
     || isSameDates(this.#point.dateTo, update.dateTo)
     || isSamePrices(this.#point.basePrice, update.basePrice);
@@ -112,11 +117,15 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update
     );
-    this.#replaceCardToForm();
+    this.#replaceFormToCard();
   };
 
-  #handleFormSubmit = () => {
-    this.#replaceFormToCard();
+  #handleDeleteEditFormButton = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
   #handleCloseEditFormButton = () => {

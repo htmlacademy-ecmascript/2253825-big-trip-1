@@ -1,13 +1,11 @@
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 
-import HeaderPresenter from './header-presenter.js';
 import PointPresenter from './point-presenter.js';
 
 import PointSortView from '../view/point-sort-view.js';
 import EventsListView from '../view/events-list-view.js';
 import NoPointView from '../view/no-point-view.js';
 
-import { generateFilter } from '../mock/filter.js';
 
 import { SortType, sort } from '../utils/sort.js';
 import { UpdateType, UserAction } from '../const.js';
@@ -28,19 +26,12 @@ export default class MainPresenter {
   #currentSortType = SortType.DAY;
 
 
-  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, tripFilterContainer }) {
+  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel/*, tripFilterContainer */}) {
 
     this.#tripMainContainer = tripMainContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
-
-    const filters = generateFilter(this.#pointsModel);
-
-    this.headerPresenter = new HeaderPresenter({
-      tripFilterContainer: tripFilterContainer,
-      filters: filters
-    });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
   }
@@ -51,7 +42,7 @@ export default class MainPresenter {
   }
 
   init() {
-    this.headerPresenter.init();
+    // this.headerPresenter.init();
     this.#renderTripEvents();
   }
 
