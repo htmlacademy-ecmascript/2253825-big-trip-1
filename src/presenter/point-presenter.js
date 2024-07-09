@@ -1,4 +1,6 @@
 import { replace, render, remove } from '../framework/render.js';
+import { UpdateType, UserAction } from '../const.js';
+import { isSameDates, isSamePrices } from '../utils/format-time.js';
 
 import EditPointView from '../view/edit-point-view.js';
 import PointListView from '../view/point-list-view.js';
@@ -100,7 +102,16 @@ export default class PointPresenter {
     }
   };
 
-  #handleEditClick = () => {
+  #handleEditClick = (update) => {
+    const isMinorUpdate = isSameDates(this.#point.dateFrom, update.dateFrom)
+    || isSameDates(this.#point.dateTo, update.dateTo)
+    || isSamePrices(this.#point.basePrice, update.basePrice);
+
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update
+    );
     this.#replaceCardToForm();
   };
 
@@ -113,9 +124,9 @@ export default class PointPresenter {
   };
 
   #favoriteClickHandler = () => {
-    this.#handleDataChange({
-      ...this.#point,
-      isFavorite: !this.#point.isFavorite
-    });
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite});
   };
 }

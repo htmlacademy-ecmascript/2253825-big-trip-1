@@ -51,5 +51,13 @@ function getPointsByPrice(pointA, pointB) {
 }
 
 
+function isSameDates(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
+function isSamePrices(priceA, priceB) {
+  return (priceA === null && priceB === null) || (priceA === priceB);
+}
+
 export { formatStringToDateTime, formatStringToShortDate, formatDuration,
-  getPointsByDate, getPointsByDuration, getPointsByPrice };
+  getPointsByDate, getPointsByDuration, getPointsByPrice, isSameDates, isSamePrices};
