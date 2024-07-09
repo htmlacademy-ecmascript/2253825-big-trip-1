@@ -12,7 +12,8 @@ function getRandomValue(items) {
   return items[getRandomInteger(0, items.length - 1)];
 }
 
+const generateID = () => Math.random().toString(36).substring(2, 10);
 
-export { getRandomInteger, getRandomValue };
+export { getRandomInteger, getRandomValue, generateID };
 
 

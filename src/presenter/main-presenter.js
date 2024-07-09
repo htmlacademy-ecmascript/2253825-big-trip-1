@@ -1,6 +1,7 @@
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 
 import PointPresenter from './point-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 
 import PointSortView from '../view/point-sort-view.js';
 import EventsListView from '../view/events-list-view.js';
@@ -19,24 +20,36 @@ export default class MainPresenter {
   #offersModel = null;
   #pointsModel = null;
   #filterModel = null;
+  #clickModel = null;
 
   #pointSortComponent = null;
   #eventListComponent = new EventsListView();
   #noPointComponent = null;
 
+  #newPointPresenter = null;
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
 
 
-  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, filterModel}) {
+  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, filterModel, clickModel}) {
 
     this.#tripMainContainer = tripMainContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+    this.#clickModel = clickModel;
 
+    this.#newPointPresenter = new NewPointPresenter({
+      pointListContainer: this.#tripMainContainer,
+      allOffers: this.#pointsModel.offers,
+      allDestinations: this.#pointsModel.destinations,
+      onDataChange: this.#handleViewAction,
+      onDestroy: this.#handleNewPointDestroy,
+    });
+
+    this.#clickModel.addObserver(this.#handleClickStateChanged);
     this.#destinationsModel.addObserver(this.#handleModelEvent);
     this.#offersModel.addObserver(this.#handleModelEvent);
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -86,9 +99,22 @@ export default class MainPresenter {
   };
 
   #modeChangeHandler = () => {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
+  #handleClickStateChanged = (updateType, state) => {
+    if (state === 'creating') {
+      this.#handleNewPointFormOpen();
+    }
+  };
+
+  #handleNewPointFormOpen() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+
+    this.#newPointPresenter.init();
+  }
 
   #sortTypeChangeHandler = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -101,8 +127,17 @@ export default class MainPresenter {
     this.#renderTripEvents();
   };
 
+  #handleNewPointDestroy = () => {
+
+    if(!this.points.length){
+      remove(this.#pointSortComponent);
+      this.#pointSortComponent = null;
+      this.#renderNoPoints();
+    }
+  };
 
   #clearPointList() {
+    this.#newPointPresenter.destroy();
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
   }

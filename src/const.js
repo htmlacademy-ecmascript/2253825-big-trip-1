@@ -48,6 +48,11 @@ const EditType = {
   CREATING: 'CREATING'
 };
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+  CREATING: 'CREATING',
+};
 
 export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, OFFER_LIST, FilterType,
-  UserAction, UpdateType, EditType };
+  UserAction, UpdateType, EditType, Mode };
