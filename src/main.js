@@ -4,7 +4,8 @@ import MockService from './service/mock-service.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
-import { generateFilter } from './mock/filter.js';
+//import { generateFilter } from './mock/filter.js';
+import FilterModel from './model/filters-model.js';
 
 const siteBodyElement = document.querySelector('.page-header');
 const siteTripInfo = siteBodyElement.querySelector('.trip-main');
@@ -17,6 +18,7 @@ const mockService = new MockService();
 const destinationsModel = new DestinationsModel(mockService);
 const offersModel = new OffersModel(mockService);
 const pointsModel = new PointsModel(mockService);
+const filterModel = new FilterModel;
 
 
 const mainPresenter = new MainPresenter({
@@ -24,14 +26,14 @@ const mainPresenter = new MainPresenter({
   destinationsModel,
   offersModel,
   pointsModel,
+  filterModel
 });
 
-const filters = generateFilter(pointsModel);
 
 const headerPresenter = new HeaderPresenter({
   tripFilterContainer: siteFilters,
+  pointsModel,
   siteTripInfo,
-  filters: filters
 });
 
 headerPresenter.init();
