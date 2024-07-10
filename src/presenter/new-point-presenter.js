@@ -5,18 +5,21 @@ import { generateID } from '../utils/common.js';
 
 export default class NewPointPresenter {
   #pointListContainer = null;
-  #allOffers = null;
-  #allDestinations = null;
+  #pointOffers = null;
+  #pointDestinations = null;
+  #clickModel = null;
 
   #handleDataChange = null;
   #handleDestroy = null;
 
   #pointEditComponent = null;
 
-  constructor({pointListContainer, allOffers, allDestinations, onDataChange, onDestroy}) {
+  constructor({pointListContainer, pointOffers, pointDestinations, clickModel,
+    onDataChange, onDestroy}) {
     this.#pointListContainer = pointListContainer;
-    this.#allOffers = allOffers;
-    this.#allDestinations = allDestinations;
+    this.#pointOffers = pointOffers;
+    this.#pointDestinations = pointDestinations;
+    this.#clickModel = clickModel;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
@@ -28,8 +31,9 @@ export default class NewPointPresenter {
     }
 
     this.#pointEditComponent = new EditPointView({
-      allOffers: this.#allOffers,
-      allDestinations: this.#allDestinations,
+      poingtgOffers: this.#pointOffers,
+      pointDestinations: this.#pointDestinations,
+      clickModel: this.#clickModel,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteEditFormButton: this.#handleDeleteEditFormButton,
       type: Mode.CREATING
@@ -53,11 +57,11 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  #handleFormSubmit = (event) => {
+  #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MINOR,
-      {id: generateID(), ...event}
+      {id: generateID(), ...point}
     );
 
     this.destroy();

@@ -43,10 +43,6 @@ const UpdateType = {
   MAJOR: 'MAJOR'
 };
 
-const EditType = {
-  EDITING: 'EDITING',
-  CREATING: 'CREATING'
-};
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -55,4 +51,4 @@ const Mode = {
 };
 
 export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, OFFER_LIST, FilterType,
-  UserAction, UpdateType, EditType, Mode };
+  UserAction, UpdateType, Mode };

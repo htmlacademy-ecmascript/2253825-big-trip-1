@@ -43,8 +43,9 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#tripMainContainer,
-      allOffers: this.#pointsModel.offers,
-      allDestinations: this.#pointsModel.destinations,
+      pointOffers: this.#pointsModel.offers,
+      pointDestinations: this.#pointsModel.destinations,
+      clickModel:this.#clickModel,
       onDataChange: this.#handleViewAction,
       onDestroy: this.#handleNewPointDestroy,
     });
@@ -104,8 +105,8 @@ export default class MainPresenter {
   };
 
   #handleClickStateChanged = (updateType, state) => {
-    if (state === 'creating') {
-      this.#handleNewPointFormOpen();
+    if (state) {
+      this.#handleNewPointFormOpen(updateType);
     }
   };
 

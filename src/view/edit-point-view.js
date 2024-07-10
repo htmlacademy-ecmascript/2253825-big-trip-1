@@ -5,8 +5,8 @@ import flatpickr from 'flatpickr';
 
 const EMPTY_POINT = {
   basePrice: 0,
-  dateFrom: null,
-  dateTo: null,
+  dateFrom: '2023-11-23T18:28:01.397Z',
+  dateTo: '2023-11-23T18:28:01.397Z',
   destinationForPoint: {
     description: null,
     name: null,

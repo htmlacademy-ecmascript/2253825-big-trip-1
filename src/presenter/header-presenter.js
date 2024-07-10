@@ -1,6 +1,6 @@
 import { render, remove, replace, RenderPosition } from '../framework/render.js';
 import { SortType, sort } from '../utils/sort.js';
-import { UpdateType, FilterType } from '../const.js';
+import { UpdateType, FilterType, Mode } from '../const.js';
 import { Filters } from '../utils/filters.js';
 
 import FilterTimeView from '../view/filter-time-view.js';
@@ -47,15 +47,20 @@ export default class HeaderPresenter {
   }
 
   #renderNewButton() {
-    this.#newPointButtonComponent = new NewPointButtonView({
-      onClick: this.#handleNewPointButtonClick
-    });
-    render(this.#newPointButtonComponent, this.tripFilterContainer, RenderPosition.BEFOREEND);
+    if (!this.#newPointButtonComponent) {
+      this.#newPointButtonComponent = new NewPointButtonView({
+        onClick: this.#handleNewPointButtonClick
+      });
+    }
 
+    const isCreating = this.#clickModel.clickState === Mode.CREATING;
+    this.#newPointButtonComponent.disable(isCreating);
+
+    render(this.#newPointButtonComponent, this.tripFilterContainer, RenderPosition.BEFOREEND);
   }
 
   #handleNewPointButtonClick = () => {
-    this.#clickModel.setClickState (UpdateType.MINOR, 'creating');
+    this.#clickModel.setClickState (UpdateType.MINOR, Mode.CREATING);
   };
 
   #renderTripInfo () {
