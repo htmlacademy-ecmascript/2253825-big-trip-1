@@ -7,19 +7,16 @@ export default class NewPointPresenter {
   #pointListContainer = null;
   #pointOffers = null;
   #pointDestinations = null;
-  #clickModel = null;
 
   #handleDataChange = null;
   #handleDestroy = null;
 
   #pointEditComponent = null;
 
-  constructor({pointListContainer, pointOffers, pointDestinations, clickModel,
-    onDataChange, onDestroy}) {
+  constructor({pointListContainer, pointOffers, pointDestinations, onDataChange, onDestroy}) {
     this.#pointListContainer = pointListContainer;
     this.#pointOffers = pointOffers;
     this.#pointDestinations = pointDestinations;
-    this.#clickModel = clickModel;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
@@ -33,7 +30,6 @@ export default class NewPointPresenter {
     this.#pointEditComponent = new EditPointView({
       poingtgOffers: this.#pointOffers,
       pointDestinations: this.#pointDestinations,
-      clickModel: this.#clickModel,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteEditFormButton: this.#handleDeleteEditFormButton,
       type: Mode.CREATING
@@ -48,11 +44,9 @@ export default class NewPointPresenter {
     if(this.#pointEditComponent === null){
       return;
     }
-
-    this.#handleDestroy();
-
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
+    this.#handleDestroy();
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }

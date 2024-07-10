@@ -9,7 +9,7 @@ import NoPointView from '../view/no-point-view.js';
 
 
 import { SortType, sort } from '../utils/sort.js';
-import { UpdateType, UserAction, FilterType } from '../const.js';
+import { UpdateType, UserAction, FilterType, Mode } from '../const.js';
 import { Filters } from '../utils/filters.js';
 
 export default class MainPresenter {
@@ -129,6 +129,7 @@ export default class MainPresenter {
   };
 
   #handleNewPointDestroy = () => {
+    this.#clickModel.setClickState(UpdateType.MINOR, Mode.DEFAULT);
 
     if(!this.points.length){
       remove(this.#pointSortComponent);
