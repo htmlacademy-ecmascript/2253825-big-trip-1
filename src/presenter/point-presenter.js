@@ -1,5 +1,5 @@
 import { replace, render, remove } from '../framework/render.js';
-import { UpdateType, UserAction } from '../const.js';
+import { UpdateType, UserAction, Mode } from '../const.js';
 import { isSameDates, isSamePrices } from '../utils/format-time.js';
 
 import EditPointView from '../view/edit-point-view.js';
@@ -17,7 +17,7 @@ export default class PointPresenter {
   #pointComponent = null;
   #pointEditComponent = null;
   #point = null;
-  //#mode = Mode.DEFAULT;
+  #mode = Mode.DEFAULT;
 
   constructor({ tripPointsContainer, destinationsModel, offersModel, onDataChange, onModeChange }) {
     this.#tripPointsContainer = tripPointsContainer;
@@ -55,13 +55,13 @@ export default class PointPresenter {
       return;
     }
 
-    // if (this.#mode === Mode.DEFAULT) {
-    //   replace(this.#pointComponent, prevPointComponent);
-    // }
+    if (this.#mode === Mode.DEFAULT) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
 
-    // if (this.#mode === Mode.EDITING) {
-    //   replace(this.#pointEditComponent, prevPointEditComponent);
-    // }
+    if (this.#mode === Mode.EDITING) {
+      replace(this.#pointEditComponent, prevPointEditComponent);
+    }
 
     remove(prevPointComponent);
     remove(prevPointEditComponent);
@@ -73,22 +73,22 @@ export default class PointPresenter {
   }
 
   resetView() {
-    // if (this.#mode !== Mode.DEFAULT) {
-    //   this.#replaceFormToCard();
-    // }
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToCard();
+    }
   }
 
   #replaceCardToForm() {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
-    //this.#mode = Mode.EDITING;
+    this.#mode = Mode.EDITING;
   }
 
   #replaceFormToCard() {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-    //this.#mode = Mode.DEFAULT;
+    this.#mode = Mode.DEFAULT;
   }
 
 

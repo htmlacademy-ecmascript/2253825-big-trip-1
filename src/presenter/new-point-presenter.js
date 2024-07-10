@@ -32,7 +32,7 @@ export default class NewPointPresenter {
       pointDestinations: this.#pointDestinations,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteEditFormButton: this.#handleDeleteEditFormButton,
-      type: Mode.CREATING
+      mode: Mode.CREATING
     });
 
     render(this.#pointEditComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);

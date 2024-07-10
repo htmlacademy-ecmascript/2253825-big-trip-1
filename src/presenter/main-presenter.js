@@ -20,7 +20,7 @@ export default class MainPresenter {
   #offersModel = null;
   #pointsModel = null;
   #filterModel = null;
-  #clickModel = null;
+  #formStateModel = null;
 
   #pointSortComponent = null;
   #eventListComponent = new EventsListView();
@@ -32,25 +32,24 @@ export default class MainPresenter {
   #filterType = FilterType.EVERYTHING;
 
 
-  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, filterModel, clickModel}) {
+  constructor ({ tripMainContainer, destinationsModel, offersModel, pointsModel, filterModel, formStateModel}) {
 
     this.#tripMainContainer = tripMainContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
-    this.#clickModel = clickModel;
+    this.#formStateModel = formStateModel;
 
     this.#newPointPresenter = new NewPointPresenter({
-      pointListContainer: this.#tripMainContainer,
+      pointListContainer: this.#eventListComponent.element,
       pointOffers: this.#pointsModel.offers,
       pointDestinations: this.#pointsModel.destinations,
-      clickModel:this.#clickModel,
       onDataChange: this.#handleViewAction,
       onDestroy: this.#handleNewPointDestroy,
     });
 
-    this.#clickModel.addObserver(this.#handleClickStateChanged);
+    this.#formStateModel.addObserver(this.#handleFormStateChanged);
     this.#destinationsModel.addObserver(this.#handleModelEvent);
     this.#offersModel.addObserver(this.#handleModelEvent);
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -104,9 +103,9 @@ export default class MainPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #handleClickStateChanged = (updateType, state) => {
-    if (state) {
-      this.#handleNewPointFormOpen(updateType);
+  #handleFormStateChanged = (state) => {
+    if (state === Mode.CREATING) {
+      this.#handleNewPointFormOpen();
     }
   };
 
@@ -129,10 +128,9 @@ export default class MainPresenter {
   };
 
   #handleNewPointDestroy = () => {
-    this.#clickModel.setClickState(UpdateType.MINOR, Mode.DEFAULT);
 
     if(!this.points.length){
-      remove(this.#pointSortComponent);
+      remove(this.#pointSortComponent && this.#formStateModel.formState !== Mode.CREATING);
       this.#pointSortComponent = null;
       this.#renderNoPoints();
     }

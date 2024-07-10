@@ -9,9 +9,10 @@ import NewPointButtonView from '../view/new-point-button-view';
 
 export default class HeaderPresenter {
 
+  #tripFilterContainer = null;
   #pointsModel = null;
   #filterModel = null;
-  #clickModel = null;
+  #formStateModel = null;
 
   #newPointButtonComponent = null;
   #tripFilterComponent = null;
@@ -19,16 +20,16 @@ export default class HeaderPresenter {
 
   #points = null;
 
-  constructor ({ tripFilterContainer, filterModel, pointsModel, clickModel }) {
+  constructor ({ tripFilterContainer, filterModel, pointsModel, formStateModel }) {
 
-    this.tripFilterContainer = tripFilterContainer;
-
+    this.#tripFilterContainer = tripFilterContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
-    this.#clickModel = clickModel;
+    this.#formStateModel = formStateModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#formStateModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
@@ -53,14 +54,14 @@ export default class HeaderPresenter {
       });
     }
 
-    const isCreating = this.#clickModel.clickState === Mode.CREATING;
+    const isCreating = this.#formStateModel.formState === Mode.CREATING;
     this.#newPointButtonComponent.disable(isCreating);
 
-    render(this.#newPointButtonComponent, this.tripFilterContainer, RenderPosition.BEFOREEND);
+    render(this.#newPointButtonComponent, this.#tripFilterContainer, RenderPosition.BEFOREEND);
   }
 
   #handleNewPointButtonClick = () => {
-    this.#clickModel.setClickState (UpdateType.MINOR, Mode.CREATING);
+    this.#formStateModel.formState (UpdateType.MINOR, Mode.CREATING);
   };
 
   #renderTripInfo () {
@@ -88,7 +89,7 @@ export default class HeaderPresenter {
     return this.#points.reduce((total, point) => {
       const basePrice = point.basePrice || 0;
       const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
-      return total + basePrice + offersPrice;
+      return total + parseInt(basePrice, 10) + offersPrice;
     }, 0);
   }
 
