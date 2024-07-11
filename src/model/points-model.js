@@ -1,4 +1,5 @@
 import Observable from '../framework/observable.js';
+
 export default class PointsModel extends Observable {
 
   constructor(service) {
@@ -9,5 +10,14 @@ export default class PointsModel extends Observable {
 
   get() {
     return this.points;
+  }
+
+  update() {
+    // eslint-disable-next-line no-console
+    // console.log(this.service);
+  }
+
+  delete() {
+    this.service.delete();
   }
 }

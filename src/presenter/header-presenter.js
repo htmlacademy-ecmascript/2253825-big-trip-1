@@ -61,7 +61,7 @@ export default class HeaderPresenter {
   }
 
   #handleNewPointButtonClick = () => {
-    this.#formStateModel.formState (UpdateType.MINOR, Mode.CREATING);
+    this.#formStateModel.formState = Mode.CREATING;
   };
 
   #renderTripInfo () {
@@ -75,21 +75,20 @@ export default class HeaderPresenter {
     });
 
     if(prevTripInfoComponent === null){
-      render(this.#tripInfoComponent, RenderPosition.AFTERBEGIN);
+      render(this.#tripInfoComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
       return;
     }
 
     replace(this.#tripInfoComponent, prevTripInfoComponent);
     remove(prevTripInfoComponent);
-
   }
 
 
   getTotalSumm() {
     return this.#points.reduce((total, point) => {
       const basePrice = point.basePrice || 0;
-      const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
-      return total + parseInt(basePrice, 10) + offersPrice;
+      // const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
+      return total + parseInt(basePrice, 10) /* + offersPrice*/;
     }, 0);
   }
 
@@ -117,7 +116,6 @@ export default class HeaderPresenter {
     };
   }
 
-
   #renderFilters() {
     const filters = this.filters;
     const prevFilterComponent = this.#tripFilterComponent;
@@ -129,7 +127,7 @@ export default class HeaderPresenter {
     });
 
     if (prevFilterComponent === null) {
-      render(this.#tripFilterComponent);
+      render(this.#tripFilterComponent, this.#tripFilterContainer);
       return;
     }
 

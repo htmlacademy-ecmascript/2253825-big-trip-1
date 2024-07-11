@@ -68,4 +68,8 @@ export default class MockService {
       return generatePoint(destination.id, offerIds, type);
     });
   }
+
+  delete() {
+    this.#points = [];
+  }
 }

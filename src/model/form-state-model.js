@@ -2,7 +2,7 @@ import Observable from '../framework/observable.js';
 import { Mode } from '../const.js';
 
 export default class FormStateModel extends Observable {
-
+//конструктор
   #currentState = Mode.DEFAULT;
 
   get formState() {

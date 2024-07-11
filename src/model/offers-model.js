@@ -1,6 +1,9 @@
-export default class OffersModel {
+import Observable from '../framework/observable';
+
+export default class OffersModel extends Observable {
 
   constructor(service) {
+    super();
     this.service = service;
     this.offers = this.service.offers;
   }
