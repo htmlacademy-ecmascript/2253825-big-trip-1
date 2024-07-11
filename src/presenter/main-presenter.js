@@ -77,7 +77,7 @@ export default class MainPresenter {
         this.#pointsModel.add(updateType, update);
         break;
       case UserAction.DELETE_EVENT:
-        this.#pointsModel.delete(updateType,update);
+        this.#pointsModel.delete(updateType, update);
         break;
     }
   };

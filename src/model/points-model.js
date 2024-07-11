@@ -12,12 +12,14 @@ export default class PointsModel extends Observable {
     return this.points;
   }
 
+
   update() {
-    // eslint-disable-next-line no-console
-    // console.log(this.service);
   }
 
   delete() {
     this.service.delete();
+  }
+
+  add() {
   }
 }

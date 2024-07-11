@@ -182,11 +182,11 @@ export default class EditPointView extends AbstractStatefulView {
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
     this.#mode = mode;
-    this._setState(EditPointView.parsePointToState({ point
-      // point: {
-      //   ...point,
-      //   destinationForPoint: this.#pointDestinations[0],
-      // }
+    this._setState(EditPointView.parsePointToState({
+      point: {
+        ...point,
+        destinationForPoint: this.#pointDestinations[0],
+      }
     }));
 
     this.#handleFormSubmit = onFormSubmit;
