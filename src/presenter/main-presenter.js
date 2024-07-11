@@ -58,7 +58,7 @@ export default class MainPresenter {
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    const points = this.#pointsModel.get();
+    const points = this.#pointsModel.points;
     const filteredPoints = Filters[this.#filterType](points);
     return sort[this.#currentSortType](filteredPoints);
   }
@@ -128,8 +128,10 @@ export default class MainPresenter {
   };
 
   #handleNewPointDestroy = () => {
+    this.#formStateModel.formState = Mode.DEFAULT;
 
-    if(!this.points.length){
+    if(!this.points.length && this.#formStateModel.formState !== Mode.CREATING) {
+
       remove(this.#pointSortComponent && this.#formStateModel.formState !== Mode.CREATING);
       this.#pointSortComponent = null;
       this.#renderNoPoints();
@@ -204,7 +206,7 @@ export default class MainPresenter {
   }
 
   #renderTripEvents() {
-    if (!this.points.length) {
+    if (!this.points.length && this.#formStateModel.formState !== Mode.CREATING) {
       this.#renderNoPoints();
       return;
     }

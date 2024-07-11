@@ -66,7 +66,7 @@ export default class HeaderPresenter {
 
   #renderTripInfo () {
     const prevTripInfoComponent = this.#tripInfoComponent;
-    this.#points = sort[SortType.DAY](this.#pointsModel.get());
+    this.#points = sort[SortType.DAY](this.#pointsModel.points);
 
     this.#tripInfoComponent = new TripInfoView({
       totalSumm: this.getTotalSumm(),
