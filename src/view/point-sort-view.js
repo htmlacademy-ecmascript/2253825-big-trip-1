@@ -45,13 +45,13 @@ export default class PointSortView extends AbstractView {
   #sortMap = null;
   #handleSortTypeChange = null;
 
-  constructor({sortType, onSortTypeChange}){
+  constructor({currentSortType, onSortTypeChange}){
     super();
 
     this.#sortMap = Object.values(SortType)
       .map((type) => ({
         type,
-        isChecked: (type === sortType),
+        isChecked: (type === currentSortType),
         isDisabled: !enabledSortType[type]
       }));
 
