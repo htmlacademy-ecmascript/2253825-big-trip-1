@@ -30,7 +30,7 @@ const UiTimeLimit = {
 };
 
 const ApiServiceConnector = {
-  AUTHORIZATION: 'Basic er883jdzbdw',
+  AUTHORIZATION: 'Basic er8836jdzbdw22',
   END_POINT: 'https://20.objects.htmlacademy.pro/big-trip'
 };
 

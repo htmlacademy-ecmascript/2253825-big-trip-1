@@ -31,7 +31,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
 
   const { point } = state;
 
-  const { basePrice, dateFrom, dateTo, offers, type } = point;
+  const { basePrice, dateFrom, dateTo, offers, type, isSaving, isDeleting, isDisabled, isDisabledSubmit } = point;
 
 
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
@@ -49,7 +49,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
 
   return (
     `<li class="trip-events__item">
-    <form class="event event--edit" action="#" method="post">
+    <form class="event event--edit${isDisabled ? 'disabled' : ''}" action="#" method="post">
       <header class="event__header">
 
         <div class="event__type-wrapper">
@@ -58,7 +58,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
             <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
           </label>
 
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+         <input class="event__type-toggle visually-hidden" ${isDisabled ? 'disabled' : ''} id="event-type-toggle-1" type="checkbox">
 
           <div class="event__type-list">
             <fieldset class="event__type-group">
@@ -114,8 +114,12 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
          type="text" name="event-price" value="${he.encode(basePrice.toString())}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">${mode === Mode.CREATING ? 'Cancel' : 'Delete'}</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled || isDisabledSubmit || basePrice === 0 ? 'disabled' : ''}>
+        ${isSaving ? 'Saving...' : 'Save'}</button>
+       <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
+
+       ${isDeleting ? 'Deleting...' : 'Delete'}</button>
+
           ${mode !== Mode.CREATING ? '<button class="event__rollup-btn" type="button"><span class="visually-hidden">Open event</span></button>' : ''}
           <span class="visually-hidden">Open event</span>
         </button>
@@ -144,9 +148,10 @@ ${hideOffersSection ? '' : `
         </section>
 `}
 
-${hideDesinationSection ? '' : `
+
         <section class="event__section  event__section--destination">
           ${createDestinationDescription(destination)}
+          ${hideDesinationSection ? '' : `
           <div class="event__photos-container">
             <div class="event__photos-tape">
 
@@ -366,7 +371,21 @@ export default class EditPointView extends AbstractStatefulView {
     });
   };
 
-  static parsePointToState = ({ point }) => ({ point });
+  static parsePointToState = (point) => ({
+    ...point,
+    isDisabled: false,
+    isSaving: false,
+    isDeleting: false,
+    isDisabledSubmit: false
+  });
 
-  static parseStateToPoint = (state) => state.point;
+  static parseStateToPoint = (state) => {
+    const point = {...state};
+    delete point.isDeleting;
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDisabledSubmit;
+
+    return point;
+  };
 }

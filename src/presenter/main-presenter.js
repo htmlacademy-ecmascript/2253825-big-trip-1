@@ -95,7 +95,7 @@ export default class MainPresenter {
         try {
           await this.#pointsModel.deletePoint(updateType, update);
         } catch (err) {
-          this.#newPointPresenter.get(update.id).setAborting();
+          this.#pointPresenters.get(update.id).setAborting();
         }
         break;
     }
@@ -236,6 +236,9 @@ export default class MainPresenter {
   }
 
   #renderLoading() {
+    this.#loadingComponent = new LoadingView(
+      this.#isLoading
+    );
     render(this.#loadingComponent, this.#tripMainContainer, RenderPosition.AFTERBEGIN);
   }
 

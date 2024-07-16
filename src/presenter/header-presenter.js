@@ -42,9 +42,9 @@ export default class HeaderPresenter {
   }
 
   init () {
-    this.#renderTripInfo();
     this.#renderFilters();
     this.#renderNewButton();
+    this.#renderTripInfo();
   }
 
   #renderNewButton() {
