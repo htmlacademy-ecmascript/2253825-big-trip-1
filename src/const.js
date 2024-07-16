@@ -23,7 +23,6 @@ const OFFER_LIST = [
   'Add breakfast',
 ];
 
-
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
@@ -38,11 +37,11 @@ const UserAction = {
 };
 
 const UpdateType = {
+  INIT: 'INIT',
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR'
 };
-
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -50,5 +49,23 @@ const Mode = {
   CREATING: 'CREATING',
 };
 
+const UiTimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
+const ApiServiceConnector = {
+  AUTHORIZATION: 'Basic er883jdzbdw',
+  END_POINT: 'https://20.objects.htmlacademy.pro/big-trip'
+};
+
+const ApiServiceMethod = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
+};
+
+
 export { OFFER_COUNT, DESTINATION_COUNT, POINT_COUNT, TYPES, OFFER_LIST, FilterType,
-  UserAction, UpdateType, Mode };
+  UserAction, UpdateType, Mode, UiTimeLimit, ApiServiceConnector, ApiServiceMethod};

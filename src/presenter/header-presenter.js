@@ -33,7 +33,7 @@ export default class HeaderPresenter {
   }
 
   get filters() {
-    const points = this.#pointsModel.get();
+    const points = this.#pointsModel.enrichedPoints;
 
     return Object.values(FilterType).map((type) => ({
       type,
@@ -87,8 +87,8 @@ export default class HeaderPresenter {
   getTotalSumm() {
     return this.#points.reduce((total, point) => {
       const basePrice = point.basePrice || 0;
-      // const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
-      return total + parseInt(basePrice, 10) /* + offersPrice*/;
+      const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
+      return total + parseInt(basePrice, 10) + offersPrice;
     }, 0);
   }
 

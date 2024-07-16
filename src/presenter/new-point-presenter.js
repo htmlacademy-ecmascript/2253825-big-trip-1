@@ -1,7 +1,7 @@
 import EditPointView from '../view/edit-point-view.js';
 import { render,remove, RenderPosition } from '../framework/render.js';
 import { UpdateType, UserAction, Mode } from '../const.js';
-import { generateID } from '../utils/common.js';
+
 
 export default class NewPointPresenter {
   #pointListContainer = null;
@@ -40,6 +40,7 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
+
   destroy(){
     if(this.#pointEditComponent === null){
       return;
@@ -51,14 +52,29 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving() {
+    this.#pointEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false
+      });
+    };
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MINOR,
-      {id: generateID(), ...point}
+      {...point, isFavorite: false}
     );
-
-    this.destroy();
   };
 
   #handleDeleteEditFormButton = () => {
