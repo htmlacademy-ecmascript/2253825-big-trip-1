@@ -66,7 +66,14 @@ export default class HeaderPresenter {
 
   #renderTripInfo () {
     const prevTripInfoComponent = this.#tripInfoComponent;
-    this.#points = sort[SortType.DAY](this.#pointsModel.points);
+    this.#points = sort[SortType.DAY](this.#pointsModel.enrichedPoints);
+
+    if (this.#points.length === 0) {
+      remove(this.#tripInfoComponent);
+      this.#tripInfoComponent = null;
+
+      return;
+    }
 
     this.#tripInfoComponent = new TripInfoView({
       totalSumm: this.getTotalSumm(),
@@ -74,7 +81,7 @@ export default class HeaderPresenter {
       datesTrip: this.getDatesTrip()
     });
 
-    if(prevTripInfoComponent === null){
+    if (prevTripInfoComponent === null) {
       render(this.#tripInfoComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
       return;
     }

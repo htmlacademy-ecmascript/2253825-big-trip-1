@@ -61,6 +61,16 @@ export default class TripApiService extends ApiService {
       'is_favorite': point.isFavorite,
     };
 
+    if('checkedOffersForPoint' in adaptedPoint) {
+      delete adaptedPoint.checkedOffersForPoint;
+    }
+    if('destinationForPoint' in adaptedPoint) {
+      delete adaptedPoint.destinationForPoint;
+    }
+    if('currentTypeOffers' in adaptedPoint) {
+      delete adaptedPoint.currentTypeOffers;
+    }
+
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
     delete adaptedPoint.basePrice;

@@ -1,28 +1,3 @@
-// import Observable from '../framework/observable.js';
-
-// export default class PointsModel extends Observable {
-
-//   constructor(service) {
-//     super();
-//     this.service = service;
-//     this.points = this.service.points;
-//   }
-
-//   get() {
-//     return this.points;
-//   }
-
-
-//   updatePoint() {
-//   }
-
-//   deletePoint() {
-//     this.service.delete();
-//   }
-
-//   addPoint() {
-//   }
-// }
 import Observable from '../framework/observable.js';
 import { UpdateType } from '../const.js';
 
@@ -53,6 +28,7 @@ export default class PointsModel extends Observable {
     return this.#destinations;
   }
 
+
   async init() {
     try {
       const [points, destinations, offers] = await Promise.all([
@@ -64,6 +40,7 @@ export default class PointsModel extends Observable {
       this.#points = points.map(this.#adaptToClient);
       this.#destinations = destinations;
       this.#offers = offers;
+
     } catch (err) {
       this.#points = [];
       this.#destinations = [];
@@ -74,13 +51,12 @@ export default class PointsModel extends Observable {
   }
 
   get enrichedPoints() {
-    if (!this.#enrichedPoints) {
-      this.#enrichedPoints = this.#points.map((point) => ({
-        ...point,
-        checkedOffersForPoint: this.getCheckedOffersForPoint(point),
-        destinationForPoint: this.getDestinationForPoint(point)
-      }));
-    }
+    this.#enrichedPoints = this.#points.map((point) => ({
+      ...point,
+      checkedOffersForPoint: this.getCheckedOffersForPoint(point),
+      destinationForPoint: this.getDestinationForPoint(point)
+    }));
+
     return this.#enrichedPoints;
   }
 

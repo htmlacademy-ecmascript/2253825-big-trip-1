@@ -9,14 +9,16 @@ const EMPTY_POINT = {
   basePrice: 0,
   dateFrom: '',
   dateTo: '',
+  destination: '',
   destinationForPoint: {
-    description: null,
-    name: null,
+    description: '',
+    name: '',
     pictures: []
   },
   isFavorite: false,
   checkedOffersForPoint: [],
   type: 'flight',
+  offers:[]
 };
 
 

@@ -2,9 +2,6 @@ import MainPresenter from './presenter/main-presenter.js';
 import HeaderPresenter from './presenter/header-presenter.js';
 import TripApiService from './service/trip-api-service.js';
 import { ApiServiceConnector } from './const.js';
-// import MockService from './service/mock-service.js';
-// import DestinationsModel from './model/destinations-model.js';
-// import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filters-model.js';
 import FormStateModel from './model/form-state-model.js';
@@ -16,9 +13,7 @@ const siteFilters = siteBodyElement.querySelector('.trip-controls__filters');
 const siteMainElement = document.querySelector('.page-main');
 const tripMainEvents = siteMainElement.querySelector('.trip-events');
 
-// const mockService = new MockService();
-// const destinationsModel = new DestinationsModel(mockService);
-// const offersModel = new OffersModel(mockService);
+
 const pointsModel = new PointsModel({
   tripApiService: new TripApiService(ApiServiceConnector.END_POINT,
     ApiServiceConnector.AUTHORIZATION)
@@ -29,8 +24,6 @@ const formStateModel = new FormStateModel;
 
 const mainPresenter = new MainPresenter({
   tripMainContainer: tripMainEvents,
-  // destinationsModel,
-  // offersModel,
   pointsModel,
   filterModel,
   formStateModel
@@ -45,5 +38,7 @@ const headerPresenter = new HeaderPresenter({
   formStateModel
 });
 
+
+pointsModel.init();
 headerPresenter.init();
 mainPresenter.init();
