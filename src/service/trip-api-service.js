@@ -63,10 +63,13 @@ export default class TripApiService extends ApiService {
 
     if('checkedOffersForPoint' in adaptedPoint) {
       delete adaptedPoint.checkedOffersForPoint;
+
     }
+
     if('destinationForPoint' in adaptedPoint) {
       delete adaptedPoint.destinationForPoint;
     }
+
     if('currentTypeOffers' in adaptedPoint) {
       delete adaptedPoint.currentTypeOffers;
     }

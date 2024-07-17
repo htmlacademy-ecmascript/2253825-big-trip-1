@@ -30,7 +30,7 @@ const UiTimeLimit = {
 };
 
 const ApiServiceConnector = {
-  AUTHORIZATION: 'Basic er8836jdzbdw22',
+  AUTHORIZATION: 'Basic er883jdzbdw33',
   END_POINT: 'https://20.objects.htmlacademy.pro/big-trip'
 };
 
@@ -42,5 +42,4 @@ const ApiServiceMethod = {
 };
 
 
-export { FilterType, UserAction, UpdateType, Mode,
-  UiTimeLimit, ApiServiceConnector, ApiServiceMethod};
+export { FilterType, UserAction, UpdateType, Mode, UiTimeLimit, ApiServiceConnector, ApiServiceMethod};

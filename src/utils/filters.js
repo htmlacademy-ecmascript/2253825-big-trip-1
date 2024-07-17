@@ -12,8 +12,9 @@ dayjs.extend(isSameOrAfter);
 const Filters = {
   [FilterType.EVERYTHING]: (points) => points,
   [FilterType.FUTURE]: (points) => points.filter((point) => dayjs(point.dateFrom).isAfter(dayjs())),
-  [FilterType.PRESENT]: (points) => points.filter((point) => dayjs(point.dateFrom)
-    .isSameOrBefore(dayjs()) && dayjs(point.dateTo).isSameOrAfter(dayjs())),
+  [FilterType.PRESENT]: (points) => points.filter((point) =>
+    (dayjs(point.dateFrom).isSameOrBefore(dayjs()) && dayjs(point.dateTo).isSameOrAfter(dayjs())) ||
+    (dayjs(point.dateFrom).isSame(dayjs(), 'day') && dayjs(point.dateTo).isSame(dayjs(), 'day'))),
   [FilterType.PAST]: (points) => points.filter((point) => dayjs(point.dateTo).isBefore(dayjs()))
 };
 
