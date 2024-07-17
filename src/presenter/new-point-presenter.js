@@ -41,10 +41,12 @@ export default class NewPointPresenter {
   }
 
 
-  destroy(){
-    if(this.#pointEditComponent === null){
+  destroy() {
+
+    if(this.#pointEditComponent === null) {
       return;
     }
+
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
     this.#handleDestroy();
@@ -72,7 +74,7 @@ export default class NewPointPresenter {
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
-      UpdateType.MINOR,
+      UpdateType.MAJOR,
       {...point, isFavorite: false}
     );
   };
