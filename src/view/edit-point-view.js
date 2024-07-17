@@ -40,7 +40,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
 
   const neededOffers = neededPoint.offers;
 
-  const hasOffersForType = neededOffers.length > 0;
+  const hasOffersForType = neededOffers.length !== 0;
   const hideOffersSection = !hasOffersForType;
 
   const hideDesinationSection = !destination;
@@ -111,7 +111,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
           &euro;
         </label>
         <input class="event__input  event__input--price" id="event-price-1"
-         type="text" name="event-price" value="${he.encode(basePrice.toString())}">
+         type="text" name="event-price" value="${he.encode(basePrice.toString())}"readonly>
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled || isDisabledSubmit || basePrice === 0 ? 'disabled' : ''}>
@@ -189,12 +189,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
     this.#mode = mode;
-    this._setState(EditPointView.parsePointToState({
-      point: {
-        ...point,
-        destinationForPoint: this.#pointDestinations[0],
-      }
-    }));
+    this._setState(EditPointView.parsePointToState({point}));
 
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditFormButton = onCloseEditFormButton;
@@ -352,6 +347,7 @@ export default class EditPointView extends AbstractStatefulView {
         basePrice: evt.target.value
       }
     });
+    this.element.querySelector('.event__save-btn').disabled = false;
   };
 
   #destinationInputChange = (evt) => {
@@ -360,15 +356,25 @@ export default class EditPointView extends AbstractStatefulView {
     const selectedDestination = this.#pointDestinations
       .find((destination) => destination.name === evt.target.value);
 
-    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
+    if (selectedDestination) {
+      const updatedDestinationForPoint = {
+        ...selectedDestination,
+      };
 
-    this.updateElement({
-      point: {
-        ...this._state.point,
-        destinationForPoint: selectedDestination,
-        destination: selectedDestinationId
-      }
-    });
+      this.updateElement({
+        point: {
+          ...this._state.point,
+          destinationForPoint: updatedDestinationForPoint,
+          destination: selectedDestination.id
+        }
+      });
+
+    } else {
+      this.updateElement({
+        destinationForPoint: EMPTY_POINT.destinationForPoint,
+        destination: null
+      });
+    }
   };
 
   static parsePointToState = (point) => ({
