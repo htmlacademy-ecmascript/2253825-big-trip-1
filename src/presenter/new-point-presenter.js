@@ -28,7 +28,7 @@ export default class NewPointPresenter {
     }
 
     this.#pointEditComponent = new EditPointView({
-      poingtgOffers: this.#pointOffers,
+      pointOffers: this.#pointOffers,
       pointDestinations: this.#pointDestinations,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteEditFormButton: this.#handleDeleteEditFormButton,
@@ -75,7 +75,7 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MAJOR,
-      {...point, isFavorite: false}
+      point
     );
   };
 
