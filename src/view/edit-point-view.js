@@ -22,16 +22,11 @@ const EMPTY_POINT = {
 };
 
 
-function createDestinationDescription(destination) {
-  return `<h3 class="event__section-title  event__section-title--destination">${destination.name}</h3>
-              <p class="event__destination-description">${destination.description}</p>`;
-}
-
 function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }) {
 
   const { point } = state;
 
-  const { basePrice, dateFrom, dateTo, offers, type, isSaving, isDeleting, isDisabled, isDisabledSubmit } = point;
+  const { basePrice, checkedOffersForPoint, destinationForPoint, dateFrom, dateTo, type, isSaving, isDeleting, isDisabled, isDisabledSubmit } = point;
 
 
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
@@ -46,6 +41,22 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
   const hideDesinationSection = !destination;
   const hideEventDetailsSection = hideOffersSection && hideDesinationSection;
 
+  const getOfferCheckboxes = () => neededOffers.map((offer) => {
+
+    const checked = checkedOffersForPoint.some((checkedOffer) => checkedOffer.id === offer.id) ? 'checked' : '';
+    return `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" data-offer-id="${offer.id}"  id="event-offer-${offer.id}" ${isDisabled ? 'disabled' : ''}
+        type="checkbox" name="event-offer-${offer.id}" ${checked}>
+      <label class="event__offer-label" for="event-offer-${offer.id}">
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.price}</span>
+      </label>
+    </div>`;
+  }).join('');
+
+  const imagesDestination = destinationForPoint.pictures.map((pictures) => `
+  <img class="event__photo" src="${pictures.src}" alt="Event photo">`);
 
   return (
     `<li class="trip-events__item">
@@ -134,33 +145,25 @@ ${hideOffersSection ? '' : `
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
     <div class="event__available-offers">
 
-    ${neededOffers.map(({ id, title, price }) => `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" type="checkbox" name="event-offer-${id}"
-       ${offers.includes(id) ? 'checked' : ''}>
-    <label class="event__offer-label" for="event-offer-${id}">
-      <span class="event__offer-title">${title}</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">${price}</span>
-    </label>
-  </div>`)
-      .join('')}
+${getOfferCheckboxes()}
+
     </div>
         </section>
 `}
 
 
+        ${hideDesinationSection ? '' : `
         <section class="event__section  event__section--destination">
-          ${createDestinationDescription(destination)}
-          ${hideDesinationSection ? '' : `
+          <h3 class="event__section-title  event__section-title--destination">${destinationForPoint.name}</h3>
+          <p class="event__destination-description">${destinationForPoint.description}</p>
+
+       ${(destinationForPoint.pictures.length) ? `
           <div class="event__photos-container">
             <div class="event__photos-tape">
-
-       ${destination.pictures
-      .map(({ src, description }) => `<img class="event__photo"src="${src}" alt="${description}"/>`)
-      .join('')}
-
+            ${imagesDestination}
             </div>
-          </div>
+          </div>` : ''}
+
         </section>
  `}
       </section>
