@@ -3,12 +3,11 @@ import { formatStringToDateTime } from '../utils/format-time.js';
 import { Mode } from '../const.js';
 import 'flatpickr/dist/flatpickr.min.css';
 import flatpickr from 'flatpickr';
-import he from 'he';
 
 const EMPTY_POINT = {
-  basePrice: 0,
-  dateFrom: '',
-  dateTo: '',
+  basePrice: 100,
+  dateFrom: new Date(),
+  dateTo: new Date(new Date().getTime() + 1 * 60 * 60 * 1000),
   destination: '',
   destinationForPoint: {
     description: '',
@@ -23,7 +22,6 @@ const EMPTY_POINT = {
 
 
 function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }) {
-
   const { point } = state;
 
   const { basePrice, checkedOffersForPoint, destinationForPoint, dateFrom, dateTo, type, isSaving, isDeleting, isDisabled, isDisabledSubmit } = point;
@@ -122,10 +120,10 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
           &euro;
         </label>
         <input class="event__input  event__input--price" id="event-price-1"
-         type="text" name="event-price" value="${he.encode(basePrice.toString())}"readonly>
+         type="text" name="event-price" value="${basePrice}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled || isDisabledSubmit || basePrice === 0 ? 'disabled' : ''}>
+      <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled || isDisabledSubmit ? 'disabled' : ''}>
         ${isSaving ? 'Saving...' : 'Save'}</button>
        <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
 
@@ -271,14 +269,20 @@ export default class EditPointView extends AbstractStatefulView {
 
   #dateFromChangeHandler = ([userDate]) => {
     this._setState({
-      dateFrom: userDate
+      point: {
+        ...this._state.point,
+        dateFrom: userDate
+      }
     });
     this.#datepickerTo.set('minDate', this._state.dateFrom);
   };
 
   #dateToChangeHandler = ([userDate]) => {
     this._setState({
-      dateTo: userDate
+      point: {
+        ...this._state.point,
+        dateTo: userDate
+      }
     });
     this.#datepickerFrom.set('maxDate', this._state.dateTo);
   };
@@ -350,7 +354,7 @@ export default class EditPointView extends AbstractStatefulView {
     this._setState({
       point: {
         ...this._state.point,
-        basePrice: evt.target.value
+        basePrice: Number(evt.target.value)
       }
     });
     this.element.querySelector('.event__save-btn').disabled = false;
@@ -397,6 +401,7 @@ export default class EditPointView extends AbstractStatefulView {
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDisabledSubmit;
+    delete point.neededOffers;
 
     return point;
   };
