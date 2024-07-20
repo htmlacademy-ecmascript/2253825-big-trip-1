@@ -296,12 +296,12 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
+    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state.point));
   };
 
   #deleteEditFormButtonHandler = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteEditFormButton(EditPointView.parseStateToPoint(this._state));
+    this.#handleDeleteEditFormButton(EditPointView.parseStateToPoint(this._state.point));
   };
 
   #closeEditFormButtonHandler = (evt) => {
@@ -334,6 +334,9 @@ export default class EditPointView extends AbstractStatefulView {
       point: {
         ...this._state.point,
         offers: checkedBoxes,
+        checkedOffersForPoint: this.#pointOffers
+          .find((offer) => offer.type === this._state.point.type).offers
+          .filter((offer) => checkedBoxes.includes(offer.id.toString()))
       }
     });
   };
