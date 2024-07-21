@@ -7,6 +7,7 @@ import PointListView from '../view/point-list-view.js';
 
 
 export default class PointPresenter {
+
   #tripPointsContainer = null;
   #point = null;
   #pointOffers = null;

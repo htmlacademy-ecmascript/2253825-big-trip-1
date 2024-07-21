@@ -26,7 +26,6 @@ export default class MainPresenter {
   #filterModel = null;
   #formStateModel = null;
 
-
   #pointSortComponent = null;
   #noPointComponent = null;
   #eventListComponent = new EventsListView();
@@ -181,7 +180,7 @@ export default class MainPresenter {
     this.#pointPresenters.clear();
   }
 
-  #clearTripEvents({resetSortType = false} = {}){
+  #clearTripEvents({resetSortType = false} = {}) {
     this.#clearPointList();
 
     remove(this.#pointSortComponent);
