@@ -26,7 +26,6 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
 
   const { basePrice, checkedOffersForPoint, destinationForPoint, dateFrom, dateTo, type, isSaving, isDeleting, isDisabled, isDisabledSubmit } = point;
 
-
   const neededPoint = pointOffers.find((pointOffer) => pointOffer.type === type);
 
   const destination = state.point.destinationForPoint;
