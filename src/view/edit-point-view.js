@@ -55,6 +55,15 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
   const imagesDestination = destinationForPoint.pictures.map((pictures) => `
   <img class="event__photo" src="${pictures.src}" alt="Event photo">`);
 
+  let buttonText;
+  if (isDeleting) {
+    buttonText = 'Deleting...';
+  } else if (mode === Mode.CREATING) {
+    buttonText = 'Cancel';
+  } else {
+    buttonText = 'Delete';
+  }
+
   return (
     `<li class="trip-events__item">
     <form class="event event--edit${isDisabled ? 'disabled' : ''}" action="#" method="post">
@@ -125,8 +134,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
       <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled || isDisabledSubmit ? 'disabled' : ''}>
         ${isSaving ? 'Saving...' : 'Save'}</button>
        <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>
-
-       ${isDeleting ? 'Deleting...' : 'Delete'}</button>
+       ${buttonText}</button>
 
           ${mode !== Mode.CREATING ? '<button class="event__rollup-btn" type="button"><span class="visually-hidden">Open event</span></button>' : ''}
           <span class="visually-hidden">Open event</span>

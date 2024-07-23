@@ -6,7 +6,7 @@ dayjs.extend(durationPlugin);
 
 function formatStringToDateTime(date) {
 
-  return dayjs(date).format('MMM YY');
+  return dayjs(date).format('DD MMM YY');
 }
 
 
