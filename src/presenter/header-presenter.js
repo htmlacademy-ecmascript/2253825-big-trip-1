@@ -33,7 +33,7 @@ export default class HeaderPresenter {
   }
 
   get filters() {
-    const points = this.#pointsModel.get();
+    const points = this.#pointsModel.enrichedPoints;
 
     return Object.values(FilterType).map((type) => ({
       type,
@@ -42,9 +42,9 @@ export default class HeaderPresenter {
   }
 
   init () {
-    this.#renderTripInfo();
     this.#renderFilters();
     this.#renderNewButton();
+    this.#renderTripInfo();
   }
 
   #renderNewButton() {
@@ -66,7 +66,14 @@ export default class HeaderPresenter {
 
   #renderTripInfo () {
     const prevTripInfoComponent = this.#tripInfoComponent;
-    this.#points = sort[SortType.DAY](this.#pointsModel.points);
+    this.#points = sort[SortType.DAY](this.#pointsModel.enrichedPoints);
+
+    if (this.#points.length === 0) {
+      remove(this.#tripInfoComponent);
+      this.#tripInfoComponent = null;
+
+      return;
+    }
 
     this.#tripInfoComponent = new TripInfoView({
       totalSumm: this.getTotalSumm(),
@@ -74,7 +81,7 @@ export default class HeaderPresenter {
       datesTrip: this.getDatesTrip()
     });
 
-    if(prevTripInfoComponent === null){
+    if (prevTripInfoComponent === null) {
       render(this.#tripInfoComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
       return;
     }
@@ -87,8 +94,8 @@ export default class HeaderPresenter {
   getTotalSumm() {
     return this.#points.reduce((total, point) => {
       const basePrice = point.basePrice || 0;
-      // const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
-      return total + parseInt(basePrice, 10) /* + offersPrice*/;
+      const offersPrice = point.checkedOffersForPoint.reduce((offerTotal, offer) => offerTotal + offer.price, 0);
+      return total + parseInt(basePrice, 10) + offersPrice;
     }, 0);
   }
 
