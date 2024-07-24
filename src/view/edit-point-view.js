@@ -64,6 +64,7 @@ function createEditPointTemplate({ state, pointDestinations, pointOffers, mode }
     buttonText = 'Delete';
   }
 
+
   return (
     `<li class="trip-events__item">
     <form class="event event--edit${isDisabled ? 'disabled' : ''}" action="#" method="post">
@@ -310,11 +311,27 @@ export default class EditPointView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
+    this._setState({
+      point: {
+        ...this._state.point,
+        isSaving: true,
+        isDisabled: false
+      }
+    });
+    this.updateElement(this._state);
     this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state.point));
   };
 
   #deleteEditFormButtonHandler = (evt) => {
     evt.preventDefault();
+    this._setState({
+      point: {
+        ...this._state.point,
+        isDeleting: true,
+        isDisabled: false
+      }
+    });
+    this.updateElement(this._state);
     this.#handleDeleteEditFormButton(EditPointView.parseStateToPoint(this._state.point));
   };
 
