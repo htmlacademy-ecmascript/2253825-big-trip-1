@@ -9,6 +9,7 @@ import NewPointButtonView from '../view/new-point-button-view';
 
 export default class HeaderPresenter {
 
+  #tripInfoContainer = null;
   #tripFilterContainer = null;
   #pointsModel = null;
   #filterModel = null;
@@ -20,8 +21,9 @@ export default class HeaderPresenter {
 
   #points = null;
 
-  constructor ({ tripFilterContainer, filterModel, pointsModel, formStateModel }) {
+  constructor ({ tripInfoContainer, tripFilterContainer, filterModel, pointsModel, formStateModel }) {
 
+    this.#tripInfoContainer = tripInfoContainer;
     this.#tripFilterContainer = tripFilterContainer;
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
@@ -57,7 +59,7 @@ export default class HeaderPresenter {
     const isCreating = this.#formStateModel.formState === Mode.CREATING;
     this.#newPointButtonComponent.disable(isCreating);
 
-    render(this.#newPointButtonComponent, this.#tripFilterContainer, RenderPosition.BEFOREEND);
+    render(this.#newPointButtonComponent, this.#tripInfoContainer, RenderPosition.BEFOREEND);
   }
 
   #handleNewPointButtonClick = () => {
@@ -82,7 +84,7 @@ export default class HeaderPresenter {
     });
 
     if (prevTripInfoComponent === null) {
-      render(this.#tripInfoComponent, this.#tripFilterContainer, RenderPosition.AFTERBEGIN);
+      render(this.#tripInfoComponent, this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
       return;
     }
 
