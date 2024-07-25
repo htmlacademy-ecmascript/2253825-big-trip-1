@@ -1,8 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { formatDate, FormatsDate } from '../utils/format-time.js';
 
+const CITY_COUNT = 3;
+
 function createRouteTemplate(names) {
-  if (names.length > 3) {
+  if (names.length > CITY_COUNT) {
     return `${names[0]} - ... - ${names[names.length - 1]}`;
   } else {
     return names.map((name) => name).join(' &mdash; ');

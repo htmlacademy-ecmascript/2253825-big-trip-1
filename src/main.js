@@ -31,8 +31,8 @@ const mainPresenter = new MainPresenter({
 
 
 const headerPresenter = new HeaderPresenter({
+  tripInfoContainer: siteTripInfo,
   tripFilterContainer: siteFilters,
-  siteTripInfo,
   pointsModel,
   filterModel,
   formStateModel
